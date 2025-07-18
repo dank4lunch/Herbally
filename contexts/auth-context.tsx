@@ -19,6 +19,22 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+// Mock user database (in real app, this would be a proper database)
+const mockUsers: { [key: string]: User & { password: string } } = {
+  dank4lunch: {
+    // Corrected username to dank4lunch
+    username: "dank4lunch",
+    isMember: true,
+    membershipExpiry: "unlimited", // Unlimited membership for this user
+  },
+  // Example of a regular user who is not a member by default
+  regularuser: {
+    username: "regularuser",
+    isMember: false,
+    password: "password123",
+  },
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isHydrated, setIsHydrated] = useState(false)
@@ -35,29 +51,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 500))
 
-    if (username === "dank4lucnch" && password === "thabiso00") {
-      const specialUser: User = {
-        username: "dank4lucnch",
-        isMember: true,
-        membershipExpiry: "unlimited",
-      }
-      setUser(specialUser)
-      localStorage.setItem("currentUser", JSON.stringify(specialUser))
+    const mockUser = mockUsers[username]
+    if (mockUser && mockUser.password === password) {
+      const { password: _, ...userWithoutPassword } = mockUser
+      setUser(userWithoutPassword)
+      localStorage.setItem("currentUser", JSON.stringify(userWithoutPassword))
       return true
-    } else {
-      // For other users, simulate a basic login
-      // In a real app, you'd check against a database
-      const storedUsers = JSON.parse(localStorage.getItem("users") || "{}")
-      if (storedUsers[username] === password) {
-        const regularUser: User = {
-          username,
-          isMember: false, // Default to non-member, they need to purchase
-          membershipExpiry: undefined,
-        }
-        setUser(regularUser)
-        localStorage.setItem("currentUser", JSON.stringify(regularUser))
-        return true
-      }
     }
     return false
   }, [])

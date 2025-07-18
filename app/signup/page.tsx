@@ -10,39 +10,43 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
+import { useToast } from "@/hooks/use-toast"
 
 export default function SignupPage() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
   const { signup } = useAuth()
+  const router = useRouter()
+  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError("")
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.")
-      return
-    }
     setLoading(true)
     const success = await signup(username, password)
     setLoading(false)
+
     if (success) {
+      toast({
+        title: "Signup Successful",
+        description: "Your account has been created. Welcome to Herbally!",
+      })
       router.push("/")
     } else {
-      setError("Username already exists.")
+      toast({
+        title: "Signup Failed",
+        description: "Username already exists or an error occurred.",
+        variant: "destructive",
+      })
     }
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-gray-100 dark:bg-gray-950">
+    <div className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-gray-100 px-4 dark:bg-gray-950">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">Sign Up</CardTitle>
-          <CardDescription>Create your account to get started with Herbally.</CardDescription>
+          <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
+          <CardDescription>Enter your desired username and password to get started.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -51,10 +55,10 @@ export default function SignupPage() {
               <Input
                 id="username"
                 type="text"
-                placeholder="Choose a username"
-                required
+                placeholder="yourusername"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                required
               />
             </div>
             <div className="space-y-2">
@@ -62,32 +66,21 @@ export default function SignupPage() {
               <Input
                 id="password"
                 type="password"
-                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirm-password">Confirm Password</Label>
-              <Input
-                id="confirm-password"
-                type="password"
                 required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
-            {error && <p className="text-sm text-red-500">{error}</p>}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Signing up..." : "Sign Up"}
             </Button>
-            <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-              Already have an account?{" "}
-              <Link href="/login" className="font-medium text-primary hover:underline" prefetch={false}>
-                Login
-              </Link>
-            </div>
           </form>
+          <div className="mt-4 text-center text-sm">
+            Already have an account?{" "}
+            <Link href="/login" className="underline">
+              Login
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

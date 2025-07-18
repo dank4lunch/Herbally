@@ -1,517 +1,376 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Separator } from "@/components/ui/separator"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useCart } from "@/contexts/cart-context"
-import { useToast } from "@/hooks/use-toast"
-import { Zap, Cookie, Droplets, ShoppingCart, Star, Info, Users } from "lucide-react"
+import { useAuth } from "@/contexts/auth-context"
+import { toast } from "react-hot-toast"
+import { ShoppingCart, Lock, Zap, Moon, Brain, Leaf } from "lucide-react"
+import Link from "next/link"
 
 interface Product {
   id: string
   name: string
+  type: "Sativa" | "Indica" | "Hybrid" | "Edible"
+  thc?: string
+  cbd?: string
   price: number
-  category: string
-  description?: string
-  strength?: string
-  effects?: string[]
+  image: string
+  description: string
+  sizes?: string[] // For strains, this could be weight (e.g., "1g", "3.5g")
   inStock: boolean
 }
 
-const jointProducts: Product[] = [
-  // Indoor Joints
+const catalogueProducts: Product[] = [
+  // Sativa Strains (with prices)
   {
-    id: "sour-diesel-joint",
-    name: "Sour Diesel Joint",
-    price: 80,
-    category: "indoor",
-    description: "Pre-rolled indoor joint",
+    id: "tequila-sunrise",
+    name: "Tequila Sunrise",
+    type: "Sativa",
+    thc: "22-26%",
+    cbd: "0.1-0.5%",
+    price: 150.0, // Price per gram (example)
+    image: "/placeholder.svg?height=300&width=300",
+    description: "A vibrant sativa strain that delivers an energizing sunrise experience with citrusy flavors.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
   {
-    id: "mimosa-joint",
-    name: "Mimosa Joint",
-    price: 80,
-    category: "indoor",
-    description: "Citrusy pre-roll",
+    id: "pineapple",
+    name: "Pineapple",
+    type: "Sativa",
+    thc: "18-22%",
+    cbd: "0.2-0.8%",
+    price: 140.0,
+    image: "/placeholder.svg?height=300&width=300",
+    description: "Sweet tropical sativa with distinct pineapple flavors for an uplifting and social high.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
   {
-    id: "sherbit-joint",
-    name: "Sherbit Joint",
-    price: 80,
-    category: "indoor",
-    description: "Sweet sherbet strain",
+    id: "jungle-fire",
+    name: "Jungle Fire",
+    type: "Sativa",
+    thc: "21-25%",
+    cbd: "0.2-0.6%",
+    price: 160.0,
+    image: "/images/strains/jungle-fire.jpeg",
+    description: "Exotic sativa with tropical fire that ignites adventure and focus.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
   {
-    id: "fire-girl-joint",
-    name: "Fire Girl Joint",
-    price: 80,
-    category: "indoor",
-    description: "Fiery sativa blend",
-    inStock: true,
-  },
-  { id: "mix-joint", name: "Mix Joint", price: 80, category: "indoor", description: "House blend", inStock: true },
-  { id: "rlc-joint", name: "RLC Joint", price: 80, category: "indoor", description: "Premium pre-roll", inStock: true },
-
-  // Outdoor Joints
-  {
-    id: "bizane-joint",
-    name: "Bizane Joint",
-    price: 50,
-    category: "outdoor",
-    description: "Outdoor grown",
-    inStock: true,
-  },
-  {
-    id: "gorilla-joint",
-    name: "Gorilla Joint",
-    price: 50,
-    category: "outdoor",
-    description: "Strong outdoor strain",
-    inStock: true,
-  },
-]
-
-const concentrateProducts: Product[] = [
-  // Moon Sticks
-  {
-    id: "moonstick-2pack",
-    name: "Moon Stick 2-Pack",
-    price: 80,
-    category: "moonstick",
-    description: "Concentrated cannabis sticks",
-    inStock: true,
-  },
-  {
-    id: "moonstick-5pack",
-    name: "Moon Stick 5-Pack",
-    price: 200,
-    category: "moonstick",
-    description: "Value pack",
-    inStock: true,
-  },
-  {
-    id: "space-stick",
-    name: "Space Stick",
-    price: 150,
-    category: "moonstick",
-    description: "Premium concentrate",
-    inStock: true,
-  },
-  {
-    id: "galaxy-stick",
-    name: "Galaxy Stick",
-    price: 300,
-    category: "moonstick",
-    description: "Ultra premium",
+    id: "jags",
+    name: "JAGS",
+    type: "Sativa",
+    thc: "26-30%",
+    cbd: "0.1-0.3%",
+    price: 180.0,
+    image: "/images/strains/jags.jpeg",
+    description: "Premium top-shelf sativa with exceptional potency and complex terpene profile.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
 
-  // Dab Hits
+  // Indica Strains (with prices)
   {
-    id: "dab-1hit",
-    name: "1 Dab Hit",
-    price: 60,
-    category: "dab",
-    description: "Single concentrate dose",
-    inStock: true,
-  },
-  { id: "dab-2hits", name: "2 Dab Hits", price: 100, category: "dab", description: "Double dose", inStock: true },
-]
-
-const edibleProducts: Product[] = [
-  // Lollipops & Drinks
-  {
-    id: "lollipop-50mg",
-    name: "Lollipop (50mg)",
-    price: 80,
-    category: "candy",
-    description: "50mg THC lollipop",
-    strength: "50mg",
+    id: "helly-belly",
+    name: "Helly Belly",
+    type: "Indica",
+    thc: "20-24%",
+    cbd: "0.5-1.2%",
+    price: 155.0,
+    image: "/placeholder.svg?height=300&width=300",
+    description: "Premium indica-dominant strain with sweet, fruity flavors for deep relaxation.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
   {
-    id: "lollipop-100mg",
-    name: "Lollipop (100mg)",
-    price: 100,
-    category: "candy",
-    description: "100mg THC lollipop",
-    strength: "100mg",
+    id: "pillow-talk",
+    name: "Pillow Talk",
+    type: "Indica",
+    thc: "18-22%",
+    cbd: "0.8-1.5%",
+    price: 145.0,
+    image: "/images/strains/pillow-talk.jpeg",
+    description: "Perfect evening strain for relaxation and peaceful sleep.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
   {
-    id: "smoothies",
-    name: "Smoothies",
-    price: 125,
-    category: "drink",
-    description: "Cannabis-infused smoothie",
+    id: "jelly-belly",
+    name: "Jelly Belly",
+    type: "Indica",
+    thc: "19-23%",
+    cbd: "0.4-0.9%",
+    price: 150.0,
+    image: "/images/strains/jelly-belly.jpeg",
+    description: "Sweet fruity indica with jelly-like flavors that provide full-body relaxation.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
   {
-    id: "sodaze-drink",
-    name: "Sodaze Drink",
-    price: 80,
-    category: "drink",
-    description: "Assorted flavours",
-    inStock: true,
-  },
-
-  // Gummies
-  {
-    id: "sweet-gummy-big",
-    name: "Sweet Gummy Bears (Big Pack)",
-    price: 280,
-    category: "gummy",
-    description: "Large pack of gummies",
+    id: "cheeky-sunset",
+    name: "Cheeky Sunset",
+    type: "Indica",
+    thc: "21-25%",
+    cbd: "0.3-0.7%",
+    price: 165.0,
+    image: "/images/strains/cheeky-sunset.jpeg",
+    description: "Perfect sunset strain with cheeky effects that transition from relaxation to peaceful evening sleep.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
   {
-    id: "sweet-gummy-10",
-    name: "Sweet Gummy Bears 10-Pack",
-    price: 100,
-    category: "gummy",
-    description: "10 piece pack",
-    inStock: true,
-  },
-  {
-    id: "sour-gummy-10",
-    name: "Sour Gummy Bears 10-Pack",
-    price: 100,
-    category: "gummy",
-    description: "Sour variety",
-    inStock: true,
-  },
-  {
-    id: "sour-gummy-big",
-    name: "Sour Bears (Big Pack)",
-    price: 280,
-    category: "gummy",
-    description: "Large sour pack",
-    inStock: true,
-  },
-  { id: "worms", name: "Worms", price: 150, category: "gummy", description: "Gummy worms", inStock: true },
-
-  // Baked Goods
-  { id: "rockets", name: "Rockets", price: 100, category: "baked", description: "Cannabis rockets", inStock: true },
-  {
-    id: "cookies-premium",
-    name: "Premium Cookies",
-    price: 150,
-    category: "baked",
-    description: "High-quality cookies",
-    inStock: true,
-  },
-  {
-    id: "cookies-regular",
-    name: "Regular Cookies",
-    price: 40,
-    category: "baked",
-    description: "Standard cookies",
-    inStock: true,
-  },
-  {
-    id: "chocolate",
-    name: "Chocolate",
-    price: 100,
-    category: "baked",
-    description: "Cannabis chocolate",
-    inStock: true,
-  },
-  { id: "crunchy", name: "Crunchy", price: 100, category: "baked", description: "Crunchy treats", inStock: true },
-  {
-    id: "brownie-premium",
-    name: "Premium Brownie",
-    price: 150,
-    category: "baked",
-    description: "High-quality brownie",
-    inStock: true,
-  },
-  {
-    id: "brownie-regular",
-    name: "Regular Brownie",
-    price: 80,
-    category: "baked",
-    description: "Standard brownie",
+    id: "loud-cake",
+    name: "Loud Cake",
+    type: "Indica",
+    thc: "23-27%",
+    cbd: "0.2-0.6%",
+    price: 170.0,
+    image: "/images/strains/loud-cake.jpeg",
+    description: "Potent dessert strain with cake-like flavors that deliver heavy relaxation.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
 
-  // Specialty Items
+  // Hybrid Strains (with prices)
   {
-    id: "shroom-jubes",
-    name: "Shroom Jubes",
-    price: 250,
-    category: "specialty",
-    description: "Mushroom-infused",
+    id: "gorilla-cookies",
+    name: "Gorilla Cookies",
+    type: "Hybrid",
+    thc: "24-28%",
+    cbd: "0.2-0.8%",
+    price: 175.0,
+    image: "/images/strains/gorilla-cookies.jpeg",
+    description: "Powerful hybrid combining the best of both worlds with potent effects.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
   {
-    id: "shroom-chocolate",
-    name: "Shroom Chocolate",
-    price: 300,
-    category: "specialty",
-    description: "Premium mushroom chocolate",
-    inStock: true,
-  },
-]
-
-const baggedProducts: Product[] = [
-  {
-    id: "outdoor-2g",
-    name: "Outdoor Bag 2g",
-    price: 60,
-    category: "bagged",
-    description: "2 gram outdoor bag",
+    id: "king-turp",
+    name: "King Turp",
+    type: "Hybrid",
+    thc: "22-26%",
+    cbd: "0.3-0.9%",
+    price: 160.0,
+    image: "/images/strains/king-turp.jpeg",
+    description: "Terpene-rich hybrid with exceptional flavor profile and balanced effects.",
+    sizes: ["1g", "3.5g", "7g"],
     inStock: true,
   },
   {
-    id: "outdoor-5g",
-    name: "Outdoor Bag 5g",
-    price: 200,
-    category: "bagged",
-    description: "5 gram outdoor bag",
+    id: "donkey-kong",
+    name: "Donkey Kong",
+    type: "Hybrid",
+    thc: "25-29%",
+    cbd: "0.1-0.5%",
+    price: 185.0,
+    image: "/images/strains/donkey-kong.jpeg",
+    description: "Powerful hybrid strain with strong, long-lasting effects.",
+    sizes: ["1g", "3.5g", "7g"],
+    inStock: true,
+  },
+  {
+    id: "mimosa",
+    name: "Mimosa",
+    type: "Hybrid",
+    thc: "21-25%",
+    cbd: "0.2-0.7%",
+    price: 150.0,
+    image: "/images/strains/mimosa.jpeg",
+    description: "Bright citrusy hybrid perfect for morning use, providing uplifting effects.",
+    sizes: ["1g", "3.5g", "7g"],
+    inStock: true,
+  },
+  // Example Edible
+  {
+    id: "gummy-bears",
+    name: "Assorted Gummy Bears",
+    type: "Edible",
+    price: 250.0,
+    image: "/placeholder.svg?height=300&width=300",
+    description: "Delicious assorted gummy bears infused with premium cannabis extract. 100mg THC per pack.",
+    sizes: ["1 Pack", "3 Packs"],
+    inStock: true,
+  },
+  {
+    id: "chocolate-bar",
+    name: "Dark Chocolate Bar",
+    type: "Edible",
+    price: 300.0,
+    image: "/placeholder.svg?height=300&width=300",
+    description: "Rich dark chocolate bar infused with high-quality cannabis. 200mg THC per bar.",
+    sizes: ["1 Bar", "2 Bars"],
     inStock: true,
   },
 ]
 
 export default function CataloguePage() {
-  const [activeTab, setActiveTab] = useState("joints")
-  const { dispatch } = useCart()
-  const { toast } = useToast()
+  const { addItem } = useCart()
+  const { user, isHydrated } = useAuth()
+  const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({})
 
-  const addToCart = (product: Product) => {
-    if (!product.inStock) {
+  const handleAddToCart = (product: Product) => {
+    const selectedSize = selectedSizes[product.id] || (product.sizes && product.sizes[0])
+    if (!selectedSize) {
       toast({
-        title: "Out of Stock",
-        description: `${product.name} is currently out of stock`,
+        title: "Selection Required",
+        description: `Please select a ${product.type === "Edible" ? "quantity" : "weight"} for the ${product.name}.`,
         variant: "destructive",
       })
       return
     }
 
-    dispatch({
-      type: "ADD_ITEM",
-      payload: {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: 1,
-      },
-    })
+    const itemToAdd = {
+      id: `${product.id}-${selectedSize}`,
+      name: `${product.name} (${selectedSize})`,
+      price: product.price, // Prices are already member-only if shown
+      image: product.image,
+      quantity: 1,
+    }
+    addItem(itemToAdd)
 
     toast({
-      title: "Added to Cart",
-      description: `${product.name} has been added to your cart`,
+      title: "Added to cart",
+      description: `${product.name} (${selectedSize}) has been added to your cart.`,
     })
   }
 
-  const ProductCard = ({ product }: { product: Product }) => (
-    <Card className="h-full">
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">{product.name}</CardTitle>
-          <Badge variant={product.inStock ? "default" : "secondary"}>
-            {product.inStock ? "In Stock" : "Out of Stock"}
-          </Badge>
-        </div>
-        {product.strength && (
-          <Badge variant="outline" className="w-fit">
-            {product.strength}
-          </Badge>
-        )}
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {product.description && <p className="text-sm text-muted-foreground">{product.description}</p>}
+  const handleSizeChange = (productId: string, size: string) => {
+    setSelectedSizes((prev) => ({ ...prev, [productId]: size }))
+  }
 
-        <div className="flex justify-between items-center">
-          <span className="text-2xl font-bold text-green-600">R{product.price.toFixed(2)}</span>
-          <Button onClick={() => addToCart(product)} disabled={!product.inStock} size="sm">
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            Add to Cart
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  )
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "Sativa":
+        return "bg-orange-500"
+      case "Indica":
+        return "bg-purple-500"
+      case "Hybrid":
+        return "bg-green-500"
+      case "Edible":
+        return "bg-red-500"
+      default:
+        return "bg-gray-500"
+    }
+  }
+
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case "Sativa":
+        return <Zap className="h-4 w-4" />
+      case "Indica":
+        return <Moon className="h-4 w-4" />
+      case "Hybrid":
+        return <Brain className="h-4 w-4" />
+      case "Edible":
+        return <Leaf className="h-4 w-4" /> // Using Leaf for edibles for now
+      default:
+        return <Leaf className="h-4 w-4" />
+    }
+  }
+
+  if (!isHydrated) {
+    return (
+      <div className="flex min-h-[calc(100vh-64px)] items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    )
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">VSC Private Members Club Catalogue</h1>
-          <p className="text-muted-foreground text-lg">Exclusive access to premium cannabis products for VSC members</p>
-          <Badge className="mt-4 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-            <Users className="h-4 w-4 mr-2" />
-            Members Only
-          </Badge>
-        </div>
-
-        {/* Important Notice */}
-        <Alert className="mb-8">
-          <Info className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Members Only:</strong> This catalogue is exclusively for VSC Private Members Club members. All
-            products comply with South African cannabis regulations. Must be 18+ with valid ID. For flower strains,
-            please visit our Education page.
-          </AlertDescription>
-        </Alert>
-
-        {/* Product Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
-            <TabsTrigger value="joints" className="flex items-center gap-2">
-              <Zap className="h-4 w-4" />
-              Pre-Rolls
-            </TabsTrigger>
-            <TabsTrigger value="concentrates" className="flex items-center gap-2">
-              <Droplets className="h-4 w-4" />
-              Concentrates
-            </TabsTrigger>
-            <TabsTrigger value="edibles" className="flex items-center gap-2">
-              <Cookie className="h-4 w-4" />
-              Edibles
-            </TabsTrigger>
-            <TabsTrigger value="bagged" className="flex items-center gap-2">
-              <Star className="h-4 w-4" />
-              Bagged
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Pre-Rolls Tab */}
-          <TabsContent value="joints" className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Indoor Pre-Rolls</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {jointProducts
-                  .filter((p) => p.category === "indoor")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Outdoor Pre-Rolls</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {jointProducts
-                  .filter((p) => p.category === "outdoor")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Concentrates Tab */}
-          <TabsContent value="concentrates" className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Moon Sticks</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {concentrateProducts
-                  .filter((p) => p.category === "moonstick")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Dab Hits</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {concentrateProducts
-                  .filter((p) => p.category === "dab")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Edibles Tab */}
-          <TabsContent value="edibles" className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Candies & Drinks</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {edibleProducts
-                  .filter((p) => p.category === "candy" || p.category === "drink")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Gummies</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {edibleProducts
-                  .filter((p) => p.category === "gummy")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Baked Goods</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {edibleProducts
-                  .filter((p) => p.category === "baked")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Specialty Items</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {edibleProducts
-                  .filter((p) => p.category === "specialty")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Bagged Tab */}
-          <TabsContent value="bagged" className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Pre-Bagged Products</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {baggedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        {/* Footer Notice */}
-        <Alert className="mt-12">
-          <AlertDescription>
-            <strong>Delivery Information:</strong> We deliver within Gauteng Province. Minimum order R300, delivery fee
-            R50. Same-day delivery available for orders placed before 6PM. Contact us at +27 67 530 5635 for more
-            information.
-          </AlertDescription>
-        </Alert>
+    <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8">
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">VSC Private Catalogue</h1>
+        <p className="mt-3 text-xl text-gray-600 dark:text-gray-400">
+          Exclusive selection of premium cannabis strains and edibles for VSC Members.
+        </p>
       </div>
+
+      {!user?.isMember ? (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <Lock className="h-16 w-16 text-gray-400 mb-6" />
+          <h2 className="text-3xl font-bold mb-4">Catalogue Access Restricted</h2>
+          <p className="text-lg text-gray-600 mb-6 max-w-md">
+            This catalogue is exclusive to VSC Members. Please log in and become a member to view prices and make
+            purchases.
+          </p>
+          <div className="flex gap-4">
+            <Button asChild>
+              <Link href="/login">Login</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/membership">Join VSC Membership</Link>
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {catalogueProducts.map((product) => {
+            const selectedSize = selectedSizes[product.id] || (product.sizes && product.sizes[0])
+
+            return (
+              <Card key={product.id} className="flex flex-col overflow-hidden">
+                <div className="relative h-60 w-full">
+                  <Image
+                    src={product.image || "/placeholder.svg"}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-300 hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  />
+                  <Badge className={`absolute top-2 left-2 text-xs ${getTypeColor(product.type)} text-white`}>
+                    {getTypeIcon(product.type)}
+                    <span className="ml-1">{product.type}</span>
+                  </Badge>
+                </div>
+                <CardContent className="flex flex-grow flex-col p-4">
+                  <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>
+                  <CardDescription className="mt-1 text-sm text-gray-500 dark:text-gray-400 flex-grow">
+                    {product.description}
+                  </CardDescription>
+                  {product.thc && product.type !== "Edible" && (
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">THC: {product.thc}</p>
+                  )}
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="text-xl font-bold text-gray-900 dark:text-gray-50">
+                      R{product.price.toFixed(2)}
+                    </span>
+                    {product.sizes && product.sizes.length > 0 && (
+                      <Select
+                        onValueChange={(value) => handleSizeChange(product.id, value)}
+                        defaultValue={product.sizes[0]}
+                      >
+                        <SelectTrigger className="w-[100px]">
+                          <SelectValue placeholder={product.type === "Edible" ? "Quantity" : "Weight"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {product.sizes.map((size) => (
+                            <SelectItem key={size} value={size}>
+                              {size}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </div>
+                </CardContent>
+                <CardFooter className="p-4 pt-0">
+                  <Button className="w-full" onClick={() => handleAddToCart(product)} disabled={!product.inStock}>
+                    <ShoppingCart className="h-4 w-4 mr-2" />
+                    {product.inStock ? "Add to Cart" : "Out of Stock"}
+                  </Button>
+                </CardFooter>
+              </Card>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

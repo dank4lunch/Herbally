@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useCart } from "@/contexts/cart-context"
 import { useAuth } from "@/contexts/auth-context"
+import { toast } from "@/hooks/use-toast"
+import { ShoppingCart, Crown } from "lucide-react"
 
 interface Product {
   id: string
@@ -19,17 +21,19 @@ interface Product {
   image: string
   category: string
   sizes?: string[]
+  inStock: boolean
 }
 
 const products: Product[] = [
   {
     id: "athletics-shirt",
     name: "Herbally Athletics Shirt",
-    description: "Comfortable and stylish athletic shirt with Herbally branding, perfect for workouts or casual wear.",
+    description: "Premium cotton athletics shirt with Herbally branding",
     price: 350.0,
     image: "/images/athletics-shirt-new.jpg",
     category: "Apparel",
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    inStock: true,
   },
   {
     id: "cap",
@@ -39,6 +43,7 @@ const products: Product[] = [
     image: "/images/cap-new.jpg",
     category: "Accessories",
     sizes: ["One Size"],
+    inStock: true,
   },
   {
     id: "og-hoodie",
@@ -49,6 +54,7 @@ const products: Product[] = [
     image: "/images/og-hoodie-new.jpg",
     category: "Apparel",
     sizes: ["S", "M", "L", "XL", "XXL"],
+    inStock: true,
   },
   {
     id: "dog-in-em",
@@ -59,44 +65,8 @@ const products: Product[] = [
     image: "/images/dog-in-em-new.jpg",
     category: "Apparel",
     sizes: ["S", "M", "L", "XL"],
+    inStock: true,
   },
-  // Removed items without real pictures as per user request
-  // {
-  //   id: "tote-bag",
-  //   name: "Herbally Tote Bag",
-  //   description: "Eco-friendly canvas tote bag with Herbally logo, perfect for groceries or daily essentials.",
-  //   price: 200.00,
-  //   image: "/images/herbally-tote.jpg",
-  //   category: "Accessories",
-  //   sizes: ["One Size"],
-  // },
-  // {
-  //   id: "sticker-pack",
-  //   name: "VSC Sticker Pack",
-  //   description: "Pack of 5 premium vinyl stickers with various Herbally designs, great for personalizing your gear.",
-  //   price: 50.00,
-  //   image: "/images/vsc-stickers.jpg",
-  //   category: "Accessories",
-  //   sizes: ["One Size"],
-  // },
-  // {
-  //   id: "keychain",
-  //   name: "Herbally Keychain",
-  //   description: "Durable metal keychain with embossed Herbally logo, a subtle way to show your support.",
-  //   price: 80.00,
-  //   image: "/images/herbally-keychain.jpg",
-  //   category: "Accessories",
-  //   sizes: ["One Size"],
-  // },
-  // {
-  //   id: "pin-set",
-  //   name: "VSC Pin Set",
-  //   description: "Set of 3 enamel pins with VSC and cannabis leaf designs, perfect for jackets or bags.",
-  //   price: 120.00,
-  //   image: "/images/vsc-pin-set.jpg",
-  //   category: "Accessories",
-  //   sizes: ["One Size"],
-  // },
 ]
 
 export default function MerchandisePage() {
@@ -107,7 +77,11 @@ export default function MerchandisePage() {
   const handleAddToCart = (product: Product) => {
     const selectedSize = selectedSizes[product.id] || (product.sizes && product.sizes[0])
     if (!selectedSize) {
-      alert("Please select a size.")
+      toast({
+        title: "Size Required",
+        description: "Please select a size for the item.",
+        variant: "destructive",
+      })
       return
     }
 
@@ -119,6 +93,11 @@ export default function MerchandisePage() {
       quantity: 1,
     }
     addItem(itemToAdd)
+
+    toast({
+      title: "Added to cart",
+      description: `${product.name} (${selectedSize}) has been added to your cart.`,
+    })
   }
 
   const handleSizeChange = (productId: string, size: string) => {
@@ -134,84 +113,99 @@ export default function MerchandisePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Herbally Merchandise</h1>
-        <p className="mt-3 text-xl text-gray-600 dark:text-gray-400">
-          Explore our exclusive collection of Herbally branded apparel and accessories.
-        </p>
-        {user?.isMember && (
-          <p className="mt-2 text-lg font-semibold text-green-600 dark:text-green-400">
-            As a VSC Member, you get 10% off all merchandise!
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-green-800 mb-4">Herbally Merchandise</h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Premium apparel and accessories representing the Herbally lifestyle
           </p>
-        )}
-        {!user?.isMember && (
-          <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
-            <Link href="/membership" className="text-primary hover:underline">
-              Join VSC Membership
-            </Link>{" "}
-            to get 10% off all merchandise!
-          </p>
-        )}
-      </div>
+          {user?.isMember && (
+            <div className="mt-4">
+              <Badge className="bg-yellow-500 text-black">
+                <Crown className="h-4 w-4 mr-2" />
+                VSC Member - 10% Off All Items
+              </Badge>
+            </div>
+          )}
+        </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product) => {
-          const displayPrice = user?.isMember ? product.price * 0.9 : product.price
-          const originalPrice = product.price
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {products.map((product) => {
+            const displayPrice = user?.isMember ? product.price * 0.9 : product.price
+            const originalPrice = product.price
+            const selectedSize = selectedSizes[product.id] || (product.sizes && product.sizes[0])
 
-          return (
-            <Card key={product.id} className="flex flex-col overflow-hidden">
-              <div className="relative h-60 w-full">
-                <Image
-                  src={product.image || "/placeholder.svg"}
-                  alt={product.name}
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-105"
-                />
-                <Badge className="absolute top-2 left-2 text-xs">{product.category}</Badge>
-              </div>
-              <CardContent className="flex flex-grow flex-col p-4">
-                <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>
-                <CardDescription className="mt-1 text-sm text-gray-500 dark:text-gray-400 flex-grow">
-                  {product.description}
-                </CardDescription>
-                <div className="mt-4 flex items-center justify-between">
-                  <div className="flex flex-col">
-                    {user?.isMember && (
-                      <span className="text-sm text-gray-500 line-through">R{originalPrice.toFixed(2)}</span>
-                    )}
-                    <span className="text-xl font-bold text-gray-900 dark:text-gray-50">
-                      R{displayPrice.toFixed(2)}
-                    </span>
-                  </div>
-                  {product.sizes && product.sizes.length > 0 && (
-                    <Select
-                      onValueChange={(value) => handleSizeChange(product.id, value)}
-                      defaultValue={product.sizes[0]}
-                    >
-                      <SelectTrigger className="w-[100px]">
-                        <SelectValue placeholder="Size" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {product.sizes.map((size) => (
-                          <SelectItem key={size} value={size}>
-                            {size}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
+            return (
+              <Card key={product.id} className="flex flex-col overflow-hidden">
+                <div className="relative h-60 w-full">
+                  <Image
+                    src={product.image || "/placeholder.svg"}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                  <Badge className="absolute top-2 left-2 text-xs">{product.category}</Badge>
                 </div>
-              </CardContent>
-              <CardFooter className="p-4 pt-0">
-                <Button className="w-full" onClick={() => handleAddToCart(product)}>
-                  Add to Cart
-                </Button>
-              </CardFooter>
-            </Card>
-          )
-        })}
+                <CardContent className="flex flex-grow flex-col p-4">
+                  <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>
+                  <CardDescription className="mt-1 text-sm text-gray-500 dark:text-gray-400 flex-grow">
+                    {product.description}
+                  </CardDescription>
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="flex flex-col">
+                      {user?.isMember && (
+                        <span className="text-sm text-gray-500 line-through">R{originalPrice.toFixed(2)}</span>
+                      )}
+                      <span className="text-xl font-bold text-gray-900 dark:text-gray-50">
+                        R{displayPrice.toFixed(2)}
+                      </span>
+                    </div>
+                    {product.sizes && product.sizes.length > 0 && (
+                      <Select
+                        onValueChange={(value) => handleSizeChange(product.id, value)}
+                        defaultValue={product.sizes[0]}
+                      >
+                        <SelectTrigger className="w-[100px]">
+                          <SelectValue placeholder="Size" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {product.sizes.map((size) => (
+                            <SelectItem key={size} value={size}>
+                              {size}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </div>
+                </CardContent>
+                <CardFooter className="p-4 pt-0">
+                  <Button className="w-full" onClick={() => handleAddToCart(product)} disabled={!product.inStock}>
+                    <ShoppingCart className="h-4 w-4 mr-2" />
+                    {product.inStock ? "Add to Cart" : "Out of Stock"}
+                  </Button>
+                </CardFooter>
+              </Card>
+            )
+          })}
+        </div>
+
+        {!user?.isMember && (
+          <div className="mt-12 text-center bg-green-50 p-8 rounded-lg">
+            <Crown className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-green-800 mb-2">Join VSC for Member Benefits</h3>
+            <p className="text-gray-600 mb-4">
+              Sign up for VSC membership and get 10% off all merchandise plus exclusive catalogue access
+            </p>
+            <Button asChild>
+              <Link href="/membership">
+                <Crown className="h-4 w-4 mr-2" />
+                Join VSC - R41/month
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )

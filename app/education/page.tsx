@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Leaf, Clock, Zap, Brain, Heart, Moon } from "lucide-react"
+import Image from "next/image"
 
 interface Strain {
   id: string
@@ -16,6 +17,7 @@ interface Strain {
   terpenes: string[]
   floweringTime: string
   description: string
+  image: string // Added image property
   medicalBenefits?: string[]
 }
 
@@ -32,6 +34,7 @@ const strains: Strain[] = [
     floweringTime: "9-10 weeks",
     description:
       "A vibrant sativa strain that delivers an energizing sunrise experience with citrusy flavors and creative enhancement.",
+    image: "/placeholder.svg?height=300&width=300", // Placeholder image
     medicalBenefits: ["Depression", "Fatigue", "Stress", "ADHD"],
   },
   {
@@ -45,6 +48,7 @@ const strains: Strain[] = [
     floweringTime: "8-9 weeks",
     description:
       "Sweet tropical sativa with distinct pineapple flavors that provide an uplifting and social high perfect for daytime use.",
+    image: "/placeholder.svg?height=300&width=300", // Placeholder image
     medicalBenefits: ["Anxiety", "Depression", "Chronic Pain", "Loss of Appetite"],
   },
   {
@@ -58,6 +62,7 @@ const strains: Strain[] = [
     floweringTime: "10-11 weeks",
     description:
       "Classic energizing sativa with diesel-like aroma and fast-acting cerebral effects that boost creativity and motivation.",
+    image: "/placeholder.svg?height=300&width=300", // Placeholder image
     medicalBenefits: ["Depression", "Chronic Fatigue", "Stress", "PTSD"],
   },
   {
@@ -71,6 +76,7 @@ const strains: Strain[] = [
     floweringTime: "9-10 weeks",
     description:
       "High-potency sativa with sweet candy-like flavors that deliver a rush of energy and euphoric creativity.",
+    image: "/placeholder.svg?height=300&width=300", // Placeholder image
     medicalBenefits: ["Depression", "Chronic Pain", "Fatigue", "Mood Disorders"],
   },
   {
@@ -84,6 +90,7 @@ const strains: Strain[] = [
     floweringTime: "9-11 weeks",
     description:
       "Exotic sativa with tropical fire that ignites adventure and focus, perfect for outdoor activities and exploration.",
+    image: "/images/strains/jungle-fire.jpeg", // Added image
     medicalBenefits: ["ADHD", "Depression", "Chronic Fatigue", "Stress"],
   },
   {
@@ -97,6 +104,7 @@ const strains: Strain[] = [
     floweringTime: "10-12 weeks",
     description:
       "Premium top-shelf sativa with exceptional potency and complex terpene profile delivering intense cerebral effects.",
+    image: "/images/strains/jags.jpeg", // Added image
     medicalBenefits: ["Severe Depression", "Chronic Pain", "PTSD", "Eating Disorders"],
   },
 
@@ -112,6 +120,7 @@ const strains: Strain[] = [
     floweringTime: "8-9 weeks",
     description:
       "Premium indica-dominant strain with sweet, fruity flavors that provide deep relaxation and peaceful sleep.",
+    image: "/placeholder.svg?height=300&width=300", // Placeholder image
     medicalBenefits: ["Insomnia", "Chronic Pain", "Anxiety", "Loss of Appetite"],
   },
   {
@@ -125,6 +134,7 @@ const strains: Strain[] = [
     floweringTime: "7-8 weeks",
     description:
       "Perfect evening strain for relaxation and peaceful conversations, leading to restful sleep and stress relief.",
+    image: "/images/strains/pillow-talk.jpeg", // Added image
     medicalBenefits: ["Insomnia", "Anxiety", "Chronic Stress", "Muscle Tension"],
   },
   {
@@ -137,6 +147,7 @@ const strains: Strain[] = [
     terpenes: ["Myrcene", "Limonene", "Linalool"],
     floweringTime: "8-9 weeks",
     description: "Sweet fruity indica with jelly-like flavors that provide full-body relaxation and enhanced appetite.",
+    image: "/images/strains/jelly-belly.jpeg", // Added image
     medicalBenefits: ["Chronic Pain", "Insomnia", "Loss of Appetite", "Nausea"],
   },
   {
@@ -149,6 +160,7 @@ const strains: Strain[] = [
     terpenes: ["Myrcene", "Caryophyllene", "Linalool"],
     floweringTime: "8-10 weeks",
     description: "Perfect sunset strain with cheeky effects that transition from relaxation to peaceful evening sleep.",
+    image: "/images/strains/cheeky-sunset.jpeg", // Added image
     medicalBenefits: ["Insomnia", "Chronic Pain", "Anxiety", "Muscle Spasms"],
   },
   {
@@ -162,6 +174,7 @@ const strains: Strain[] = [
     floweringTime: "9-10 weeks",
     description:
       "Potent dessert strain with cake-like flavors that deliver heavy relaxation and strong sedative effects.",
+    image: "/images/strains/loud-cake.jpeg", // Added image
     medicalBenefits: ["Severe Insomnia", "Chronic Pain", "Anxiety", "PTSD"],
   },
   {
@@ -175,6 +188,7 @@ const strains: Strain[] = [
     floweringTime: "8-9 weeks",
     description:
       "Classic kush variety with sweet candy-like flavors providing traditional indica relaxation and peace.",
+    image: "/placeholder.svg?height=300&width=300", // Placeholder image
     medicalBenefits: ["Chronic Pain", "Insomnia", "Stress", "Muscle Tension"],
   },
 
@@ -190,6 +204,7 @@ const strains: Strain[] = [
     floweringTime: "9-10 weeks",
     description:
       "Powerful hybrid combining the best of both worlds with potent effects that balance creativity and relaxation.",
+    image: "/images/strains/gorilla-cookies.jpeg", // Added image
     medicalBenefits: ["Chronic Pain", "Depression", "Anxiety", "ADHD"],
   },
   {
@@ -203,6 +218,7 @@ const strains: Strain[] = [
     floweringTime: "9-11 weeks",
     description:
       "Terpene-rich hybrid with exceptional flavor profile and balanced effects perfect for both day and evening use.",
+    image: "/images/strains/king-turp.jpeg", // Added image
     medicalBenefits: ["Chronic Pain", "Inflammation", "Anxiety", "Depression"],
   },
   {
@@ -216,6 +232,7 @@ const strains: Strain[] = [
     floweringTime: "10-11 weeks",
     description:
       "Powerful hybrid strain with strong, long-lasting effects that provide the perfect balance of mental and physical benefits.",
+    image: "/images/strains/donkey-kong.jpeg", // Added image
     medicalBenefits: ["Severe Chronic Pain", "Depression", "PTSD", "Eating Disorders"],
   },
   {
@@ -229,6 +246,7 @@ const strains: Strain[] = [
     floweringTime: "9-10 weeks",
     description:
       "Bright citrusy hybrid perfect for morning use, providing uplifting effects with balanced relaxation for social activities.",
+    image: "/images/strains/mimosa.jpeg", // Added image
     medicalBenefits: ["Depression", "Anxiety", "Chronic Fatigue", "Stress"],
   },
   {
@@ -242,6 +260,7 @@ const strains: Strain[] = [
     floweringTime: "9-10 weeks",
     description:
       "Premium hybrid with complex dessert flavors and perfectly balanced effects combining the best of indica and sativa.",
+    image: "/placeholder.svg?height=300&width=300", // Placeholder image
     medicalBenefits: ["Chronic Pain", "Anxiety", "Depression", "Insomnia"],
   },
   {
@@ -255,6 +274,7 @@ const strains: Strain[] = [
     floweringTime: "8-9 weeks",
     description:
       "Balanced cookies hybrid with sweet flavors and perfectly balanced effects suitable for any time of day.",
+    image: "/placeholder.svg?height=300&width=300", // Placeholder image
     medicalBenefits: ["Anxiety", "Chronic Pain", "Depression", "Stress"],
   },
 ]
@@ -296,16 +316,23 @@ export default function EducationPage() {
 
   const StrainCard = ({ strain }: { strain: Strain }) => (
     <Card className="hover:shadow-lg transition-shadow">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">{strain.name}</CardTitle>
-          <Badge className={`${getTypeColor(strain.type)} text-white`}>
+      <CardHeader className="p-0">
+        <div className="relative h-48 w-full">
+          <Image
+            src={strain.image || "/placeholder.svg"}
+            alt={strain.name}
+            fill
+            className="object-cover rounded-t-lg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          <Badge className={`absolute top-2 right-2 ${getTypeColor(strain.type)} text-white`}>
             {getTypeIcon(strain.type)}
             <span className="ml-1">{strain.type}</span>
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="p-4 space-y-4">
+        <CardTitle className="text-lg">{strain.name}</CardTitle>
         <p className="text-gray-600 text-sm">{strain.description}</p>
 
         <div className="grid grid-cols-2 gap-4">

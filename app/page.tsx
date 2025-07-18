@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/contexts/auth-context"
 import Link from "next/link"
 import Image from "next/image"
-import { CheckCircle2, Crown, Leaf, Truck } from "lucide-react"
+import { CheckCircle2, Crown, Leaf, Truck, MessageCircleQuestionIcon as QuestionCircleIcon } from "lucide-react" // Added QuestionCircleIcon
 
 export default function HomePage() {
   const { user, isHydrated } = useAuth()
@@ -46,7 +46,7 @@ export default function HomePage() {
                       <>
                         Your unlimited membership is active. Enjoy exclusive benefits and discounts on all products!
                         <br />
-                        <Link href="/merchandise" className="text-emerald-600 hover:underline">
+                        <Link href="/catalogue" className="text-emerald-600 hover:underline">
                           Shop now and save!
                         </Link>
                       </>
@@ -120,8 +120,66 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Call to Action Section */}
+        {/* How to Acquire Cannabis Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+          <div className="container px-4 md:px-6 text-center">
+            <div className="space-y-4">
+              <div className="inline-block rounded-lg bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+                Acquisition Guide
+              </div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">How to Acquire Our Cannabis</h2>
+              <p className="max-w-[700px] mx-auto text-gray-500 md:text-xl dark:text-gray-400">
+                Here are some common questions about purchasing cannabis from Herbally.
+              </p>
+            </div>
+            <div className="mx-auto mt-12 grid max-w-3xl gap-8 text-left">
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <QuestionCircleIcon className="h-6 w-6 text-blue-600" />
+                  Do I need a medical card?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  No, a medical card is not required to access our VSC Catalogue. However, you must be a registered VSC
+                  Member to view prices and make purchases.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <QuestionCircleIcon className="h-6 w-6 text-blue-600" />
+                  What are the age requirements?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  You must be 18 years or older to become a VSC Member and purchase cannabis products. Age verification
+                  is required.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <QuestionCircleIcon className="h-6 w-6 text-blue-600" />
+                  How does delivery work?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  We offer discreet and secure delivery within our specified service areas. Once your order is placed
+                  and payment confirmed, we will arrange a convenient delivery time.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <QuestionCircleIcon className="h-6 w-6 text-blue-600" />
+                  Is my personal information safe?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Yes, we prioritize your privacy and security. All personal and legal details collected during the
+                  purchase process are handled with the utmost confidentiality and in compliance with data protection
+                  regulations.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action Section */}
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-950">
           <div className="container px-4 md:px-6 text-center">
             <div className="space-y-4">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Join the VSC Community</h2>
@@ -137,7 +195,7 @@ export default function HomePage() {
         </section>
 
         {/* Featured Products Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-950">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
