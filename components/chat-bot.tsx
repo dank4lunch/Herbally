@@ -38,7 +38,7 @@ const membershipResponses: QuickResponse[] = [
     id: "signup",
     text: "How do I sign up?",
     response:
-      "Visit any of our Gauteng locations with valid SA ID. Our staff will help you complete the membership application. You can also WhatsApp us at 073 123 4567 to start the process!",
+      "Visit any of our Gauteng locations with valid SA ID. Our staff will help you complete the membership application. You can also WhatsApp us at +27 67 530 5635 to start the process!",
   },
   {
     id: "locations",
@@ -71,7 +71,7 @@ const supportResponses: QuickResponse[] = [
     id: "delivery",
     text: "Do you offer delivery?",
     response:
-      "Yes! We deliver within 15km of our locations in Gauteng. Minimum order R300, delivery fee R50. Same-day delivery available for orders placed before 6PM. WhatsApp 073 123 4567 to order!",
+      "Yes! We deliver within 15km of our locations in Gauteng. Minimum order R300, delivery fee R50. Same-day delivery available for orders placed before 6PM. WhatsApp +27 67 530 5635 to order!",
   },
   {
     id: "products",
@@ -95,7 +95,7 @@ const supportResponses: QuickResponse[] = [
     id: "contact",
     text: "How can I contact you?",
     response:
-      "WhatsApp: 073 123 4567, Phone: 011 123 4567, Email: info@herbally.co.za. You can also visit any of our 4 Gauteng locations. We're here to help!",
+      "WhatsApp: +27 67 530 5635, Phone: +27 67 530 5635, Email: info@herbally.co.za. You can also visit any of our 4 Gauteng locations. We're here to help!",
   },
 ]
 
@@ -103,6 +103,7 @@ export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [mounted, setMounted] = useState(false)
+  const [messageCounter, setMessageCounter] = useState(0)
 
   useEffect(() => {
     setMounted(true)
@@ -110,12 +111,13 @@ export function ChatBot() {
 
   const addMessage = (text: string, isBot = false) => {
     const newMessage: Message = {
-      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `msg-${messageCounter}-${isBot ? "bot" : "user"}`,
       text,
       isBot,
       timestamp: new Date(),
     }
     setMessages((prev) => [...prev, newMessage])
+    setMessageCounter((prev) => prev + 1)
   }
 
   const handleQuickResponse = (response: QuickResponse) => {
@@ -127,10 +129,17 @@ export function ChatBot() {
 
   const resetChat = () => {
     setMessages([])
+    setMessageCounter(0)
   }
 
   if (!mounted) {
-    return null
+    return (
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button size="lg" className="rounded-full h-14 w-14 bg-green-600 hover:bg-green-700 shadow-lg" disabled>
+          <MessageCircle className="h-6 w-6" />
+        </Button>
+      </div>
+    )
   }
 
   return (
@@ -165,7 +174,9 @@ export function ChatBot() {
 
                 <TabsContent value="membership" className="mt-4">
                   <div className="px-4">
-                    <Badge className="mb-4 bg-green-100 text-green-800">VSC Private Members Club</Badge>
+                    <Badge className="mb-4 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                      VSC Private Members Club
+                    </Badge>
 
                     {messages.length > 0 && (
                       <ScrollArea className="h-48 mb-4 border rounded p-2">
@@ -174,7 +185,9 @@ export function ChatBot() {
                             {message.isBot && <Bot className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />}
                             <div
                               className={`max-w-[80%] p-2 rounded-lg text-sm ${
-                                message.isBot ? "bg-green-100 text-green-900" : "bg-blue-100 text-blue-900"
+                                message.isBot
+                                  ? "bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100"
+                                  : "bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100"
                               }`}
                             >
                               {message.text}
@@ -204,7 +217,7 @@ export function ChatBot() {
                         Clear Chat
                       </Button>
                       <Button asChild size="sm" className="flex-1 bg-green-600 hover:bg-green-700">
-                        <a href="https://wa.me/27731234567" target="_blank" rel="noopener noreferrer">
+                        <a href="https://wa.me/27675305635" target="_blank" rel="noopener noreferrer">
                           <MessageSquare className="h-4 w-4 mr-1" />
                           WhatsApp
                         </a>
@@ -215,7 +228,9 @@ export function ChatBot() {
 
                 <TabsContent value="support" className="mt-4">
                   <div className="px-4">
-                    <Badge className="mb-4 bg-blue-100 text-blue-800">Customer Support</Badge>
+                    <Badge className="mb-4 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      Customer Support
+                    </Badge>
 
                     {messages.length > 0 && (
                       <ScrollArea className="h-48 mb-4 border rounded p-2">
@@ -224,7 +239,9 @@ export function ChatBot() {
                             {message.isBot && <Bot className="h-6 w-6 text-blue-600 mt-1 flex-shrink-0" />}
                             <div
                               className={`max-w-[80%] p-2 rounded-lg text-sm ${
-                                message.isBot ? "bg-blue-100 text-blue-900" : "bg-green-100 text-green-900"
+                                message.isBot
+                                  ? "bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100"
+                                  : "bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100"
                               }`}
                             >
                               {message.text}
@@ -254,7 +271,7 @@ export function ChatBot() {
                         Clear Chat
                       </Button>
                       <Button asChild size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
-                        <a href="tel:+27111234567">
+                        <a href="tel:+27675305635">
                           <Phone className="h-4 w-4 mr-1" />
                           Call Us
                         </a>
