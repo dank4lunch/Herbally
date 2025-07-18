@@ -4,8 +4,9 @@ import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, ShoppingCart, User, Crown, LogOut, Home, BookOpen, Store, Package, Phone, Truck } from "lucide-react"
+import { Menu, ShoppingCart, User, Crown, LogOut, Home, BookOpen, Store, Package, Phone, Truck, Images } from "lucide-react"
 import { ShoppingCart as ShoppingCartComponent } from "@/components/shopping-cart" // Renamed import
+import { Gallery } from "@/components/gallery"
 import { useCart } from "@/contexts/cart-context"
 import { useAuth } from "@/contexts/auth-context"
 import {
@@ -22,6 +23,7 @@ import Image from "next/image"
 
 export function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
   const { state: cartState } = useCart()
   const { user, logout, isHydrated } = useAuth()
 
@@ -53,6 +55,12 @@ export function Navbar() {
           <Link href="/education" className="hover:text-green-600 dark:hover:text-green-400" prefetch={false}>
             Education
           </Link>
+          <button
+            onClick={() => setIsGalleryOpen(true)}
+            className="hover:text-green-600 dark:hover:text-green-400 font-medium text-sm"
+          >
+            Gallery
+          </button>
           <Link href="/track" className="hover:text-green-600 dark:hover:text-green-400" prefetch={false}>
             Track Order
           </Link>
@@ -156,6 +164,13 @@ export function Navbar() {
                     <BookOpen className="h-4 w-4" />
                     Education
                   </Link>
+                  <button
+                    onClick={() => setIsGalleryOpen(true)}
+                    className="flex items-center gap-2 hover:text-green-600 font-medium text-sm text-left"
+                  >
+                    <Images className="h-4 w-4" />
+                    Gallery
+                  </button>
                   <Link href="/track" className="flex items-center gap-2 hover:text-green-600" prefetch={false}>
                     <Truck className="h-4 w-4" />
                     Track Order
@@ -191,6 +206,7 @@ export function Navbar() {
         </div>
       </div>
       <ShoppingCartComponent isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <Gallery isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} />
     </header>
   )
 }
