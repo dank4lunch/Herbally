@@ -1,6 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Leaf, Target } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { MapPin, Users, Leaf, Award, Heart, Shield } from "lucide-react"
+import Image from "next/image"
 
 export default function About() {
   return (
@@ -10,164 +11,234 @@ export default function About() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge variant="outline" className="mb-4">
-              Our Story
+              🌿 About Herbally
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              Cultivating Excellence
+              Herbally VSC Private Members Club
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Founded in 2014, Herbally has been dedicated to growing the finest cannabis using sustainable, organic
-              practices that honor both the plant and the environment.
+              South Africa's premier cannabis lifestyle destination, serving the Gauteng community with quality,
+              compliance, and authentic South African hospitality since our founding.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Company Story */}
+      {/* Main Story */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Our Journey</h2>
-            <div className="prose prose-lg max-w-none text-muted-foreground">
-              <p className="text-lg leading-relaxed mb-6">
-                Herbally began as a small family farm in Northern California, where our founders recognized the
-                incredible potential of cannabis as both medicine and recreation. What started with a few plants in a
-                greenhouse has grown into one of the most respected cannabis cultivation operations on the West Coast.
-              </p>
-              <p className="text-lg leading-relaxed mb-6">
-                Our commitment to organic, sustainable growing practices has never wavered. We believe that the best
-                cannabis comes from healthy soil, clean water, and careful attention to each plant throughout its
-                lifecycle. Every strain we cultivate is a testament to our dedication to quality and environmental
-                stewardship.
-              </p>
-              <p className="text-lg leading-relaxed">
-                Today, Herbally products are available in over 500 licensed dispensaries across California, Oregon, and
-                Washington. We're proud to be a trusted name in premium cannabis, known for our consistent quality,
-                innovative strains, and commitment to the cannabis community.
-              </p>
+            <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+              <div>
+                <h2 className="text-3xl font-bold mb-6">Our South African Story</h2>
+                <p className="text-muted-foreground mb-4">
+                  Born in the heart of Gauteng, Herbally VSC Private Members Club represents the evolution of South
+                  Africa's cannabis culture. We're not just a dispensary – we're a community hub where cannabis
+                  enthusiasts gather to share knowledge, experiences, and authentic South African hospitality.
+                </p>
+                <p className="text-muted-foreground mb-4">
+                  Our flagship location, the Hurricane Pub & Grill in Katlehong, combines traditional South African pub
+                  culture with modern cannabis retail, creating a unique space where members can relax, socialize, and
+                  enjoy premium cannabis products in a safe, welcoming environment.
+                </p>
+                <p className="text-muted-foreground">
+                  From our humble beginnings to our current four locations across Gauteng, we've remained committed to
+                  supporting local growers, maintaining the highest quality standards, and fostering a responsible
+                  cannabis community that reflects the diversity and spirit of South Africa.
+                </p>
+              </div>
+              <div className="relative h-96 rounded-lg overflow-hidden">
+                <Image
+                  src="/placeholder.svg?height=400&width=600"
+                  alt="Herbally Hurricane Pub & Grill"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Mission & Values */}
+      {/* Values */}
       <section className="py-20 bg-muted/50">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            <Card className="border-2">
-              <CardHeader>
-                <Target className="h-12 w-12 text-green-600 mb-4" />
-                <CardTitle className="text-2xl">Our Mission</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  To cultivate the highest quality cannabis using sustainable practices while building a stronger, more
-                  inclusive cannabis community. We're committed to providing safe, consistent, and exceptional products
-                  that enhance people's lives.
-                </p>
-              </CardContent>
-            </Card>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4">Our Values</h2>
+              <p className="text-xl text-muted-foreground">
+                The principles that guide everything we do in the South African cannabis community
+              </p>
+            </div>
 
-            <Card className="border-2">
-              <CardHeader>
-                <Leaf className="h-12 w-12 text-emerald-600 mb-4" />
-                <CardTitle className="text-2xl">Our Values</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Quality, sustainability, and community are at the heart of everything we do. We believe in transparent
-                  practices, environmental responsibility, and supporting the communities where we operate.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Growing Process */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Growing Process</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              From seed to harvest, every step is carefully managed to ensure the highest quality cannabis.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {[
-              {
-                step: "01",
-                title: "Seed Selection",
-                description: "We carefully select premium genetics from trusted breeders worldwide.",
-              },
-              {
-                step: "02",
-                title: "Organic Growing",
-                description: "Plants are grown in living soil with organic nutrients and natural pest management.",
-              },
-              {
-                step: "03",
-                title: "Hand Harvesting",
-                description: "Each plant is hand-harvested at peak ripeness for maximum potency and flavor.",
-              },
-              {
-                step: "04",
-                title: "Careful Curing",
-                description: "Slow curing process preserves terpenes and ensures smooth, flavorful cannabis.",
-              },
-            ].map((process, index) => (
-              <div key={index} className="text-center">
-                <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-green-600 font-bold text-lg">{process.step}</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{process.title}</h3>
-                <p className="text-muted-foreground">{process.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-20 bg-muted/50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Meet Our Team</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Passionate cultivators and cannabis experts dedicated to growing the finest products.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              {
-                name: "Sarah Martinez",
-                role: "Head Cultivator",
-                bio: "20+ years of cannabis cultivation experience with expertise in organic growing methods.",
-              },
-              {
-                name: "Mike Johnson",
-                role: "Master Grower",
-                bio: "Former agricultural scientist specializing in sustainable farming and plant genetics.",
-              },
-              {
-                name: "Lisa Chen",
-                role: "Quality Director",
-                bio: "Ensures every batch meets our strict quality standards through rigorous testing protocols.",
-              },
-            ].map((member, index) => (
-              <Card key={index}>
+            <div className="grid md:grid-cols-3 gap-8">
+              <Card className="text-center">
                 <CardHeader>
-                  <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full mx-auto mb-4"></div>
-                  <CardTitle className="text-center">{member.name}</CardTitle>
-                  <CardDescription className="text-center font-medium text-green-600">{member.role}</CardDescription>
+                  <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="h-8 w-8 text-green-600" />
+                  </div>
+                  <CardTitle>Compliance & Safety</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-center">{member.bio}</p>
+                  <p className="text-muted-foreground">
+                    We operate in full compliance with South African cannabis regulations, ensuring safe, legal access
+                    for our members while maintaining the highest safety standards.
+                  </p>
                 </CardContent>
               </Card>
-            ))}
+
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Leaf className="h-8 w-8 text-green-600" />
+                  </div>
+                  <CardTitle>Quality & Authenticity</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Every product in our catalogue is carefully selected and tested. We work exclusively with trusted
+                    South African growers who share our commitment to quality and sustainability.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="h-8 w-8 text-green-600" />
+                  </div>
+                  <CardTitle>Community & Ubuntu</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Ubuntu - "I am because we are." We believe in building a supportive cannabis community that reflects
+                    South African values of togetherness, respect, and shared prosperity.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Locations */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4">Our Gauteng Locations</h2>
+              <p className="text-xl text-muted-foreground">
+                Four convenient locations serving the greater Johannesburg area
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <MapPin className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                  <CardTitle className="text-lg">Hurricane Pub & Grill</CardTitle>
+                  <p className="text-sm text-muted-foreground">Katlehong (Flagship)</p>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Our original location combining traditional pub atmosphere with premium cannabis retail
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <MapPin className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                  <CardTitle className="text-lg">Herbally Germiston</CardTitle>
+                  <p className="text-sm text-muted-foreground">Germiston CBD</p>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Modern retail space in the heart of Germiston with full member services
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <MapPin className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                  <CardTitle className="text-lg">Herbally Boksburg</CardTitle>
+                  <p className="text-sm text-muted-foreground">Vuka Darkie</p>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Community-focused location serving the East Rand with personalized service
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <MapPin className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                  <CardTitle className="text-lg">Herbally Meyerton</CardTitle>
+                  <p className="text-sm text-muted-foreground">Meyerton</p>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Serving the Vaal Triangle area with our complete catalogue and member benefits
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="py-20 bg-muted/50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-4 gap-8 text-center">
+              <div>
+                <div className="text-4xl font-bold text-green-600 mb-2">4</div>
+                <p className="text-muted-foreground">Gauteng Locations</p>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-green-600 mb-2">2000+</div>
+                <p className="text-muted-foreground">Active Members</p>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-green-600 mb-2">50+</div>
+                <p className="text-muted-foreground">Premium Products</p>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-green-600 mb-2">100%</div>
+                <p className="text-muted-foreground">SA Compliant</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
+            <p className="text-xl text-muted-foreground mb-8">
+              To be South Africa's leading cannabis lifestyle destination, providing safe, legal access to premium
+              cannabis products while building a responsible community that celebrates the plant's benefits and South
+              African cannabis culture.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Badge variant="outline" className="text-lg py-2 px-4">
+                <Users className="h-4 w-4 mr-2" />
+                Community First
+              </Badge>
+              <Badge variant="outline" className="text-lg py-2 px-4">
+                <Award className="h-4 w-4 mr-2" />
+                Quality Assured
+              </Badge>
+              <Badge variant="outline" className="text-lg py-2 px-4">
+                <Shield className="h-4 w-4 mr-2" />
+                Fully Compliant
+              </Badge>
+            </div>
           </div>
         </div>
       </section>

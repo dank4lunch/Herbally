@@ -1,229 +1,265 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { MessageCircle, X, User, Bot } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { MessageCircle, X, User, Bot, Phone, MessageSquare } from "lucide-react"
 
 interface Message {
   id: string
   text: string
-  sender: "user" | "bot"
+  isBot: boolean
   timestamp: Date
 }
+
+interface QuickResponse {
+  id: string
+  text: string
+  response: string
+}
+
+const membershipResponses: QuickResponse[] = [
+  {
+    id: "benefits",
+    text: "What are membership benefits?",
+    response:
+      "VSC Private Members enjoy exclusive access to premium strains, member-only pricing, priority service, special events, and our complete catalogue including edibles, concentrates, and accessories. Members also get loyalty points and birthday specials!",
+  },
+  {
+    id: "pricing",
+    text: "How much does membership cost?",
+    response:
+      "Membership is R500 annually with incredible value! You'll save more than the membership fee with member pricing on your first few purchases. Plus you get a welcome gift package worth R300!",
+  },
+  {
+    id: "signup",
+    text: "How do I sign up?",
+    response:
+      "Visit any of our Gauteng locations with valid SA ID. Our staff will help you complete the membership application. You can also WhatsApp us at 073 123 4567 to start the process!",
+  },
+  {
+    id: "locations",
+    text: "Where are your locations?",
+    response:
+      "We have 4 locations in Gauteng: Hurricane Pub & Grill (Katlehong), Herbally Germiston, Herbally Boksburg, and Herbally Meyerton. All locations offer full member services and our complete catalogue.",
+  },
+  {
+    id: "card",
+    text: "Lost my membership card?",
+    response:
+      "No worries! Visit any location with your ID for a replacement card (R50 fee). Your membership status and points are linked to your ID number, so you won't lose any benefits.",
+  },
+  {
+    id: "discounts",
+    text: "What discounts do I get?",
+    response:
+      "Members get 10-20% off regular pricing, exclusive strain access, bulk discounts, and special promotions. Plus earn loyalty points on every purchase for additional savings!",
+  },
+]
+
+const supportResponses: QuickResponse[] = [
+  {
+    id: "hours",
+    text: "What are your operating hours?",
+    response:
+      "Monday-Thursday: 10AM-10PM, Friday-Saturday: 10AM-12AM, Sunday: 12PM-8PM. Hurricane Pub & Grill has extended hours until 2AM on weekends!",
+  },
+  {
+    id: "delivery",
+    text: "Do you offer delivery?",
+    response:
+      "Yes! We deliver within 15km of our locations in Gauteng. Minimum order R300, delivery fee R50. Same-day delivery available for orders placed before 6PM. WhatsApp 073 123 4567 to order!",
+  },
+  {
+    id: "products",
+    text: "What products do you have?",
+    response:
+      "Our full catalogue includes premium indoor/outdoor flower, pre-rolled joints, edibles (gummies, chocolates, cookies), concentrates (dab hits, moon sticks), and accessories. Members get access to exclusive strains!",
+  },
+  {
+    id: "payment",
+    text: "What payment methods do you accept?",
+    response:
+      "We accept cash, card payments, EFT, and SnapScan. Online orders can be paid via secure card payment or EFT. All transactions are discreet and secure.",
+  },
+  {
+    id: "age",
+    text: "What's the minimum age?",
+    response:
+      "You must be 18+ with valid South African ID. We strictly verify age and ID for all purchases. No exceptions - it's the law and we take compliance seriously.",
+  },
+  {
+    id: "contact",
+    text: "How can I contact you?",
+    response:
+      "WhatsApp: 073 123 4567, Phone: 011 123 4567, Email: info@herbally.co.za. You can also visit any of our 4 Gauteng locations. We're here to help!",
+  },
+]
 
 export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
-  const [input, setInput] = useState("")
+  const [mounted, setMounted] = useState(false)
 
-  const membershipResponses = {
-    benefits:
-      "Our membership includes: 20% discount on all products, early access to new strains, exclusive member events, free delivery on orders over R300, and priority customer support.",
-    pricing: "Membership costs R150 per year or R15 per month. Students get 50% off with valid student ID.",
-    discount:
-      "Members get 20% off all products, free delivery on orders over R300, and exclusive access to member-only sales and events.",
-    card: "Lost your membership card? No problem! Contact us at +27 67 530 5635 or visit any of our locations with your ID to get a replacement card for R20.",
-    signup:
-      "You can sign up for membership at any of our locations or call us at +27 67 530 5635. Bring a valid ID and you'll be set up in minutes!",
-  }
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-  const customerResponses = {
-    hours:
-      "Our main location (Herbally Hurricane Pub & Grill) is open Mon-Sat: 14:00-02:00, Sun: 12:00-02:00. Other locations have varying hours - check our locations page for details.",
-    delivery:
-      "We offer delivery within 20km of our locations. Free delivery for orders over R300 (members) or R500 (non-members). Delivery takes 1-3 hours.",
-    products:
-      "We carry premium cannabis strains including King Trup, Gorilla Cookies, Mimosa, and many more. All products are lab-tested and locally sourced.",
-    payment: "We accept cash, card, and EFT payments. Members get additional payment options and priority processing.",
-    age: "You must be 21+ with valid South African ID or passport. We strictly verify age and ID for all purchases.",
-    contact:
-      "Call us at +27 67 530 5635 or WhatsApp the same number. You can also visit any of our locations during business hours.",
-  }
-
-  const getResponse = (message: string, type: "membership" | "customer"): string => {
-    const lowerMessage = message.toLowerCase()
-    const responses = type === "membership" ? membershipResponses : customerResponses
-
-    if (lowerMessage.includes("benefit") || lowerMessage.includes("perk"))
-      return responses.benefits || responses.products
-    if (lowerMessage.includes("price") || lowerMessage.includes("cost")) return responses.pricing || responses.payment
-    if (lowerMessage.includes("discount") || lowerMessage.includes("sale"))
-      return responses.discount || responses.products
-    if (lowerMessage.includes("card") || lowerMessage.includes("lost") || lowerMessage.includes("replace"))
-      return responses.card || responses.contact
-    if (lowerMessage.includes("sign up") || lowerMessage.includes("join")) return responses.signup || responses.contact
-    if (lowerMessage.includes("hour") || lowerMessage.includes("open") || lowerMessage.includes("close"))
-      return responses.hours || responses.hours
-    if (lowerMessage.includes("deliver") || lowerMessage.includes("shipping"))
-      return responses.delivery || responses.delivery
-    if (lowerMessage.includes("product") || lowerMessage.includes("strain") || lowerMessage.includes("weed"))
-      return responses.products || responses.products
-    if (lowerMessage.includes("pay") || lowerMessage.includes("money") || lowerMessage.includes("cash"))
-      return responses.payment || responses.payment
-    if (lowerMessage.includes("age") || lowerMessage.includes("id") || lowerMessage.includes("old"))
-      return responses.age || responses.age
-    if (lowerMessage.includes("contact") || lowerMessage.includes("phone") || lowerMessage.includes("call"))
-      return responses.contact || responses.contact
-
-    return type === "membership"
-      ? "I can help with membership benefits, pricing, discounts, card replacement, and signup. What would you like to know?"
-      : "I can help with store hours, delivery, products, payment methods, age requirements, and contact info. How can I assist you?"
-  }
-
-  const handleSendMessage = (type: "membership" | "customer") => {
-    if (!input.trim()) return
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: input,
-      sender: "user",
+  const addMessage = (text: string, isBot = false) => {
+    const newMessage: Message = {
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      text,
+      isBot,
       timestamp: new Date(),
     }
-
-    const botResponse: Message = {
-      id: (Date.now() + 1).toString(),
-      text: getResponse(input, type),
-      sender: "bot",
-      timestamp: new Date(),
-    }
-
-    setMessages((prev) => [...prev, userMessage, botResponse])
-    setInput("")
+    setMessages((prev) => [...prev, newMessage])
   }
 
-  const clearMessages = () => {
+  const handleQuickResponse = (response: QuickResponse) => {
+    addMessage(response.text, false)
+    setTimeout(() => {
+      addMessage(response.response, true)
+    }, 500)
+  }
+
+  const resetChat = () => {
     setMessages([])
+  }
+
+  if (!mounted) {
+    return null
   }
 
   return (
     <>
-      {/* Floating Chat Button */}
-      <div className="fixed bottom-4 right-4 z-50">
+      {/* Chat Button */}
+      <div className="fixed bottom-6 right-6 z-50">
         <Button
-          onClick={() => setIsOpen(!isOpen)}
-          className="h-14 w-14 rounded-full bg-green-600 hover:bg-green-700 shadow-lg"
-          size="icon"
+          onClick={() => setIsOpen(true)}
+          size="lg"
+          className="rounded-full h-14 w-14 bg-green-600 hover:bg-green-700 shadow-lg"
         >
-          {isOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+          <MessageCircle className="h-6 w-6" />
         </Button>
       </div>
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 w-96 max-w-[calc(100vw-2rem)] z-50">
+        <div className="fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-2rem)]">
           <Card className="shadow-2xl border-2">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">Herbally Support</CardTitle>
-                <Button variant="ghost" size="sm" onClick={clearMessages}>
-                  Clear
-                </Button>
-              </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-lg">Herbally Support</CardTitle>
+              <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
+                <X className="h-4 w-4" />
+              </Button>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               <Tabs defaultValue="membership" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
+                <TabsList className="grid w-full grid-cols-2 mx-4 mt-2">
                   <TabsTrigger value="membership">Membership</TabsTrigger>
-                  <TabsTrigger value="customer">Customer Support</TabsTrigger>
+                  <TabsTrigger value="support">Support</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="membership" className="space-y-4">
-                  <div className="h-64 overflow-y-auto space-y-3 p-2 border rounded-lg bg-muted/20">
-                    {messages.length === 0 && (
-                      <div className="text-center text-muted-foreground text-sm py-8">
-                        Ask me about membership benefits, pricing, or how to sign up!
-                      </div>
+                <TabsContent value="membership" className="mt-4">
+                  <div className="px-4">
+                    <Badge className="mb-4 bg-green-100 text-green-800">VSC Private Members Club</Badge>
+
+                    {messages.length > 0 && (
+                      <ScrollArea className="h-48 mb-4 border rounded p-2">
+                        {messages.map((message) => (
+                          <div key={message.id} className={`flex gap-2 mb-3 ${message.isBot ? "" : "justify-end"}`}>
+                            {message.isBot && <Bot className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />}
+                            <div
+                              className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                                message.isBot ? "bg-green-100 text-green-900" : "bg-blue-100 text-blue-900"
+                              }`}
+                            >
+                              {message.text}
+                            </div>
+                            {!message.isBot && <User className="h-6 w-6 text-blue-600 mt-1 flex-shrink-0" />}
+                          </div>
+                        ))}
+                      </ScrollArea>
                     )}
-                    {messages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`flex items-start gap-2 ${
-                          message.sender === "user" ? "justify-end" : "justify-start"
-                        }`}
-                      >
-                        {message.sender === "bot" && (
-                          <div className="bg-green-100 dark:bg-green-900 p-1 rounded-full">
-                            <Bot className="h-4 w-4 text-green-600" />
-                          </div>
-                        )}
-                        <div
-                          className={`max-w-[80%] p-3 rounded-lg text-sm ${
-                            message.sender === "user" ? "bg-green-600 text-white" : "bg-background border"
-                          }`}
+
+                    <div className="space-y-2 mb-4">
+                      {membershipResponses.map((response) => (
+                        <Button
+                          key={response.id}
+                          variant="outline"
+                          size="sm"
+                          className="w-full text-left justify-start h-auto py-2 px-3 bg-transparent"
+                          onClick={() => handleQuickResponse(response)}
                         >
-                          {message.text}
-                        </div>
-                        {message.sender === "user" && (
-                          <div className="bg-blue-100 dark:bg-blue-900 p-1 rounded-full">
-                            <User className="h-4 w-4 text-blue-600" />
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && handleSendMessage("membership")}
-                      placeholder="Ask about membership..."
-                      className="flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
-                    <Button onClick={() => handleSendMessage("membership")} size="sm">
-                      Send
-                    </Button>
+                          {response.text}
+                        </Button>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-2 pb-4">
+                      <Button onClick={resetChat} variant="outline" size="sm" className="flex-1 bg-transparent">
+                        Clear Chat
+                      </Button>
+                      <Button asChild size="sm" className="flex-1 bg-green-600 hover:bg-green-700">
+                        <a href="https://wa.me/27731234567" target="_blank" rel="noopener noreferrer">
+                          <MessageSquare className="h-4 w-4 mr-1" />
+                          WhatsApp
+                        </a>
+                      </Button>
+                    </div>
                   </div>
                 </TabsContent>
 
-                <TabsContent value="customer" className="space-y-4">
-                  <div className="h-64 overflow-y-auto space-y-3 p-2 border rounded-lg bg-muted/20">
-                    {messages.length === 0 && (
-                      <div className="text-center text-muted-foreground text-sm py-8">
-                        Ask me about store hours, delivery, products, or anything else!
-                      </div>
+                <TabsContent value="support" className="mt-4">
+                  <div className="px-4">
+                    <Badge className="mb-4 bg-blue-100 text-blue-800">Customer Support</Badge>
+
+                    {messages.length > 0 && (
+                      <ScrollArea className="h-48 mb-4 border rounded p-2">
+                        {messages.map((message) => (
+                          <div key={message.id} className={`flex gap-2 mb-3 ${message.isBot ? "" : "justify-end"}`}>
+                            {message.isBot && <Bot className="h-6 w-6 text-blue-600 mt-1 flex-shrink-0" />}
+                            <div
+                              className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                                message.isBot ? "bg-blue-100 text-blue-900" : "bg-green-100 text-green-900"
+                              }`}
+                            >
+                              {message.text}
+                            </div>
+                            {!message.isBot && <User className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />}
+                          </div>
+                        ))}
+                      </ScrollArea>
                     )}
-                    {messages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`flex items-start gap-2 ${
-                          message.sender === "user" ? "justify-end" : "justify-start"
-                        }`}
-                      >
-                        {message.sender === "bot" && (
-                          <div className="bg-green-100 dark:bg-green-900 p-1 rounded-full">
-                            <Bot className="h-4 w-4 text-green-600" />
-                          </div>
-                        )}
-                        <div
-                          className={`max-w-[80%] p-3 rounded-lg text-sm ${
-                            message.sender === "user" ? "bg-green-600 text-white" : "bg-background border"
-                          }`}
+
+                    <div className="space-y-2 mb-4">
+                      {supportResponses.map((response) => (
+                        <Button
+                          key={response.id}
+                          variant="outline"
+                          size="sm"
+                          className="w-full text-left justify-start h-auto py-2 px-3 bg-transparent"
+                          onClick={() => handleQuickResponse(response)}
                         >
-                          {message.text}
-                        </div>
-                        {message.sender === "user" && (
-                          <div className="bg-blue-100 dark:bg-blue-900 p-1 rounded-full">
-                            <User className="h-4 w-4 text-blue-600" />
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && handleSendMessage("customer")}
-                      placeholder="Ask about our services..."
-                      className="flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
-                    <Button onClick={() => handleSendMessage("customer")} size="sm">
-                      Send
-                    </Button>
+                          {response.text}
+                        </Button>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-2 pb-4">
+                      <Button onClick={resetChat} variant="outline" size="sm" className="flex-1 bg-transparent">
+                        Clear Chat
+                      </Button>
+                      <Button asChild size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
+                        <a href="tel:+27111234567">
+                          <Phone className="h-4 w-4 mr-1" />
+                          Call Us
+                        </a>
+                      </Button>
+                    </div>
                   </div>
                 </TabsContent>
               </Tabs>
