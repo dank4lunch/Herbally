@@ -3,9 +3,52 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { Mail, Phone, MapPin, Clock } from "lucide-react"
+import { Mail, Phone, MapPin, Clock, Star } from "lucide-react"
 
 export default function Contact() {
+  const locations = [
+    {
+      name: "Herbally Hurricane Pub & Grill",
+      address: "103 Nota Street, Katlehong, GP, 1431",
+      phone: "+27 67 530 5635",
+      hours: "Mon-Sat: 14:00-02:00, Sun: 12:00-02:00",
+      rating: 4.9,
+      strains: ["King Trup", "Gorilla Cookies", "Mimosa"],
+      mapUrl:
+        "https://maps.google.com/maps?width=100%25&height=600&hl=en&q=103%20Nota%20Street,%20Katlehong,%20GP,%201431&t=&z=14&ie=UTF8&iwloc=B&output=embed",
+    },
+    {
+      name: "Herbally Germiston",
+      address: "180 Spilsbury Road, Germiston, GP, 1401",
+      hours: "Mon-Sat: 14:00-02:00, Sun: 12:00-02:00",
+      rating: 4.9,
+      strains: ["Sugar Rush", "Cheeky Sunset", "Runts Layer Cake"],
+      phone: "+27 73 923 3855",
+      mapUrl:
+        "https://maps.google.com/maps?width=100%25&height=600&hl=en&q=180%20Spilsbury%20Road,%20Germiston,%20GP,%201401&t=&z=14&ie=UTF8&iwloc=B&output=embed",
+    },
+    {
+      name: "Herbally Vuka Darkie",
+      address: "Dawn Park R554 & R21 Road, 85 N Boundary Rd Klippoortje, Klippoortjie, Dawn Park, Boksburg, 1459",
+      phone: "+27 73 923 3855",
+      hours: "Mon-Sun: 9:00-17:00",
+      rating: 4.7,
+      strains: ["Loud Cake", "Tequila Sunrise", "Donkey Kong"],
+      mapUrl:
+        "https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Dawn%20Park%20R554%20&%20R21%20Road,%2085%20N%20Boundary%20Rd%20Klippoortje,%20Klippoortjie,%20Dawn%20Park,%20Boksburg,%201459&t=&z=14&ie=UTF8&iwloc=B&output=embed",
+    },
+    {
+      name: "Herbally Meyerton",
+      address: "50 Station Road, Meyerton, Gauteng, 1961, South Africa",
+      hours: "Mon-Sun: 10AM-10PM",
+      rating: 4.5,
+      strains: ["Jelly Belly", "Jungle Fire", "King Trup"],
+      phone: "+27 73 923 3855",
+      mapUrl:
+        "https://maps.google.com/maps?width=100%25&height=600&hl=en&q=50%20Station%20Road,%20Meyerton,%20Gauteng,%201961,%20South%20Africa&t=&z=14&ie=UTF8&iwloc=B&output=embed",
+    },
+  ]
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -13,14 +56,13 @@ export default function Contact() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge variant="outline" className="mb-4">
-              Contact Us
+              Get in Touch
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-              Get in Touch
+              Contact Herbally
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Have questions about cannabis education or research? We're here to help with evidence-based information
-              and expert guidance.
+              Have questions about our products or want to visit one of our locations? We're here to help.
             </p>
           </div>
         </div>
@@ -72,77 +114,57 @@ export default function Contact() {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-2xl">Contact Information</CardTitle>
-                  <CardDescription>Multiple ways to reach our team of cannabis education experts.</CardDescription>
+                  <CardDescription>Multiple ways to reach our team.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="bg-emerald-100 dark:bg-emerald-900 p-3 rounded-lg">
-                      <Mail className="h-6 w-6 text-emerald-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">Email</h3>
-                      <p className="text-muted-foreground">info@herbally.com</p>
-                      <p className="text-muted-foreground">research@herbally.com</p>
-                    </div>
-                  </div>
-
                   <div className="flex items-start gap-4">
                     <div className="bg-emerald-100 dark:bg-emerald-900 p-3 rounded-lg">
                       <Phone className="h-6 w-6 text-emerald-600" />
                     </div>
                     <div>
                       <h3 className="font-semibold">Phone</h3>
-                      <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                      <p className="text-sm text-muted-foreground">Mon-Fri, 9AM-5PM PST</p>
+                      <p className="text-muted-foreground">+27 67 530 5635</p>
+                      <p className="text-muted-foreground">+27 73 923 3855</p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
                     <div className="bg-emerald-100 dark:bg-emerald-900 p-3 rounded-lg">
-                      <MapPin className="h-6 w-6 text-emerald-600" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-6 w-6 text-emerald-600"
+                      >
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                      </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold">Address</h3>
-                      <p className="text-muted-foreground">
-                        123 Cannabis Research Blvd
-                        <br />
-                        Suite 456
-                        <br />
-                        San Francisco, CA 94102
-                      </p>
+                      <h3 className="font-semibold">WhatsApp</h3>
+                      <p className="text-muted-foreground">+27 67 530 5635</p>
+                      <Button variant="outline" size="sm" className="mt-2 bg-transparent">
+                        <a href="https://wa.me/27675305635" target="_blank" rel="noopener noreferrer">
+                          Message Us
+                        </a>
+                      </Button>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
                     <div className="bg-emerald-100 dark:bg-emerald-900 p-3 rounded-lg">
-                      <Clock className="h-6 w-6 text-emerald-600" />
+                      <Mail className="h-6 w-6 text-emerald-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold">Business Hours</h3>
-                      <p className="text-muted-foreground">
-                        Monday - Friday: 9:00 AM - 5:00 PM
-                        <br />
-                        Saturday: 10:00 AM - 2:00 PM
-                        <br />
-                        Sunday: Closed
-                      </p>
+                      <h3 className="font-semibold">Email</h3>
+                      <p className="text-muted-foreground">info@herbally.co.za</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Media Inquiries</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    For press inquiries, interviews, or media requests, please contact our media team.
-                  </p>
-                  <Button variant="outline">
-                    <Mail className="h-4 w-4 mr-2" />
-                    media@herbally.com
-                  </Button>
                 </CardContent>
               </Card>
             </div>
@@ -150,52 +172,113 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 bg-muted/50">
+      {/* Store Locations */}
+      <section id="locations" className="py-20 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Store Locations</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Common questions about cannabis education and our services
+              Visit our stores across Gauteng to experience our premium cannabis products.
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-6">
-            {[
-              {
-                question: "Is the information on your site medically reviewed?",
-                answer:
-                  "Yes, all our educational content is reviewed by licensed medical professionals and cannabis researchers before publication.",
-              },
-              {
-                question: "Do you provide medical advice?",
-                answer:
-                  "No, we provide educational information only. Always consult with a healthcare provider for medical advice regarding cannabis use.",
-              },
-              {
-                question: "How often is your research updated?",
-                answer:
-                  "We continuously monitor new research and update our content monthly to reflect the latest scientific findings.",
-              },
-              {
-                question: "Can I use your content for educational purposes?",
-                answer:
-                  "Yes, our educational materials can be used for non-commercial educational purposes with proper attribution.",
-              },
-              {
-                question: "Do you offer consulting services?",
-                answer:
-                  "We offer educational consulting for healthcare providers, researchers, and educational institutions. Contact us for more information.",
-              },
-            ].map((faq, index) => (
-              <Card key={index}>
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {locations.map((location, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-lg">{faq.question}</CardTitle>
+                  <div className="flex justify-between items-start mb-2">
+                    <Badge variant="outline">Official Store</Badge>
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span className="text-sm font-medium">{location.rating}</span>
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl">{location.name}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{faq.answer}</p>
+                <CardContent className="space-y-4">
+                  <div className="flex items-start gap-2">
+                    <MapPin className="h-4 w-4 text-muted-foreground mt-1 flex-shrink-0" />
+                    <span className="text-sm text-muted-foreground">{location.address}</span>
+                  </div>
+
+                  {location.phone && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">{location.phone}</span>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">{location.hours}</span>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold mb-2 text-sm">Featured Strains</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {location.strains.map((strain, strainIndex) => (
+                        <Badge key={strainIndex} variant="secondary" className="text-xs">
+                          {strain}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Google Maps Embed */}
+                  <div className="aspect-video rounded-lg overflow-hidden">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={location.mapUrl}
+                      frameBorder="0"
+                      scrolling="no"
+                      marginHeight={0}
+                      marginWidth={0}
+                      className="border-0"
+                    />
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button variant="outline" className="flex-1 bg-transparent">
+                      <a
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.address)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full"
+                      >
+                        Get Directions
+                      </a>
+                    </Button>
+                    {location.phone && (
+                      <Button variant="outline" className="flex-1 bg-transparent">
+                        <a href={`tel:${location.phone}`}>Call Store</a>
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Location Stats */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            {[
+              { number: "4+", label: "Store Locations", icon: <MapPin className="h-6 w-6" /> },
+              { number: "1", label: "Province", icon: <Star className="h-6 w-6" /> },
+              { number: "6+", label: "Cities Served", icon: <Clock className="h-6 w-6" /> },
+              { number: "4.8", label: "Average Rating", icon: <Star className="h-6 w-6" /> },
+            ].map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="bg-emerald-100 dark:bg-emerald-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="text-emerald-600">{stat.icon}</div>
+                </div>
+                <div className="text-3xl font-bold text-emerald-600 mb-2">{stat.number}</div>
+                <div className="text-muted-foreground">{stat.label}</div>
+              </div>
             ))}
           </div>
         </div>
