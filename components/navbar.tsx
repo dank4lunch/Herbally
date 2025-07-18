@@ -6,10 +6,19 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { Menu, Leaf, ShoppingCart } from "lucide-react"
+import { Menu, Leaf, ShoppingCart, LogOut, Crown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useCart } from "@/contexts/cart-context"
+import { useAuth } from "@/contexts/auth-context"
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -26,8 +35,13 @@ export function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false)
   const pathname = usePathname()
   const { state } = useCart()
+  const { user, logout } = useAuth()
 
   const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0)
+
+  const handleLogout = () => {
+    logout()
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -73,9 +87,55 @@ export function Navbar() {
               )}
             </Button>
             <ThemeToggle />
-            <Button asChild>
-              <Link href="/contact#locations">Find Our Stores</Link>
-            </Button>
+
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="bg-green-100 text-green-600">
+                        {user.name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <div className="flex items-center justify-start gap-2 p-2">
+                    <div className="flex flex-col space-y-1 leading-none">
+                      <p className="font-medium">{user.name}</p>
+                      <p className="w-[200px] truncate text-sm text-muted-foreground">{user.email}</p>
+                      {user.hasMembership && (
+                        <Badge variant="secondary" className="w-fit bg-yellow-100 text-yellow-800">
+                          <Crown className="h-3 w-3 mr-1" />
+                          VSC Member
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/membership">
+                      <Crown className="mr-2 h-4 w-4" />
+                      <span>Membership</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Button variant="ghost" asChild>
+                  <Link href="/login">Sign In</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/signup">Sign Up</Link>
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -110,6 +170,28 @@ export function Navbar() {
                     </span>
                   </Link>
 
+                  {user && (
+                    <div className="border-b pb-4">
+                      <div className="flex items-center space-x-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarFallback className="bg-green-100 text-green-600">
+                            {user.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{user.name}</p>
+                          <p className="text-sm text-muted-foreground">{user.email}</p>
+                          {user.hasMembership && (
+                            <Badge variant="secondary" className="mt-1 bg-yellow-100 text-yellow-800">
+                              <Crown className="h-3 w-3 mr-1" />
+                              VSC Member
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <nav className="flex flex-col space-y-4">
                     {navigation.map((item) => (
                       <Link
@@ -126,9 +208,29 @@ export function Navbar() {
                     ))}
                   </nav>
 
-                  <Button className="w-full" asChild>
-                    <Link href="/contact#locations">Find Our Stores</Link>
-                  </Button>
+                  {user ? (
+                    <div className="space-y-2">
+                      <Button className="w-full bg-transparent" variant="outline" asChild>
+                        <Link href="/membership">
+                          <Crown className="mr-2 h-4 w-4" />
+                          Membership
+                        </Link>
+                      </Button>
+                      <Button className="w-full bg-transparent" variant="outline" onClick={handleLogout}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Log Out
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <Button className="w-full bg-transparent" variant="outline" asChild>
+                        <Link href="/login">Sign In</Link>
+                      </Button>
+                      <Button className="w-full" asChild>
+                        <Link href="/signup">Sign Up</Link>
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>
@@ -161,7 +263,12 @@ export function Navbar() {
                   <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex-1">
                       <h3 className="font-semibold">{item.name}</h3>
-                      <p className="text-sm text-muted-foreground">R{item.price.toFixed(2)}</p>
+                      <p className="text-sm text-muted-foreground">
+                        R{item.price.toFixed(2)}
+                        {user?.hasMembership && (
+                          <span className="ml-2 text-green-600 font-medium">(10% member discount applied)</span>
+                        )}
+                      </p>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Button
@@ -195,7 +302,10 @@ export function Navbar() {
 
                 <div className="border-t pt-4">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="font-semibold">Total: R{state.total.toFixed(2)}</span>
+                    <span className="font-semibold">
+                      Total: R{user?.hasMembership ? (state.total * 0.9).toFixed(2) : state.total.toFixed(2)}
+                    </span>
+                    {user?.hasMembership && <Badge className="bg-green-100 text-green-800">10% Member Discount</Badge>}
                   </div>
                   <Button className="w-full" asChild>
                     <Link href="/checkout">Checkout</Link>

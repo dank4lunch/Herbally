@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/contexts/cart-context"
 import { useToast } from "@/hooks/use-toast"
-import { Leaf, Zap, Cookie, Droplets, ShoppingCart, Star, Info, Users } from "lucide-react"
+import { Zap, Cookie, Droplets, ShoppingCart, Star, Info, Users } from "lucide-react"
 
 interface Product {
   id: string
@@ -21,128 +21,6 @@ interface Product {
   effects?: string[]
   inStock: boolean
 }
-
-const flowerProducts: Product[] = [
-  // Indoor Grams
-  {
-    id: "helly-belly",
-    name: "Helly Belly",
-    price: 100,
-    category: "indoor",
-    description: "Premium indoor strain",
-    inStock: true,
-  },
-  {
-    id: "pillow-talk",
-    name: "Pillow Talk",
-    price: 100,
-    category: "indoor",
-    description: "Relaxing evening strain",
-    inStock: true,
-  },
-  {
-    id: "gorilla-cookies",
-    name: "Gorilla Cookies",
-    price: 120,
-    category: "indoor",
-    description: "Potent hybrid strain",
-    inStock: true,
-  },
-  {
-    id: "king-turp",
-    name: "King Turp",
-    price: 120,
-    category: "indoor",
-    description: "High terpene profile",
-    inStock: true,
-  },
-  {
-    id: "tequila-sunrise",
-    name: "Tequila Sunrise",
-    price: 150,
-    category: "indoor",
-    description: "Energizing sativa",
-    inStock: true,
-  },
-  {
-    id: "sugar-rush",
-    name: "Sugar Rush",
-    price: 150,
-    category: "indoor",
-    description: "Sweet and potent",
-    inStock: true,
-  },
-  {
-    id: "jelly-belly",
-    name: "Jelly Belly",
-    price: 120,
-    category: "indoor",
-    description: "Fruity indica",
-    inStock: true,
-  },
-  {
-    id: "donkey-kong",
-    name: "Donkey Kong",
-    price: 150,
-    category: "indoor",
-    description: "Strong hybrid",
-    inStock: true,
-  },
-  {
-    id: "cheeky-sunset",
-    name: "Cheeky Sunset",
-    price: 150,
-    category: "indoor",
-    description: "Evening relaxation",
-    inStock: true,
-  },
-  {
-    id: "mimosa",
-    name: "Mimosa",
-    price: 150,
-    category: "indoor",
-    description: "Citrusy morning strain",
-    inStock: true,
-  },
-  { id: "loud-cake", name: "Loud Cake", price: 150, category: "indoor", description: "Dessert strain", inStock: true },
-  { id: "rlc", name: "RLC", price: 150, category: "indoor", description: "Premium quality", inStock: true },
-  {
-    id: "jungle-fire",
-    name: "Jungle Fire",
-    price: 150,
-    category: "indoor",
-    description: "Tropical effects",
-    inStock: true,
-  },
-  { id: "jags", name: "JAGS", price: 180, category: "indoor", description: "Top shelf quality", inStock: true },
-
-  // Outdoor/Specials
-  {
-    id: "pineapple",
-    name: "Pineapple",
-    price: 80,
-    category: "special",
-    description: "Tropical outdoor strain",
-    inStock: true,
-  },
-  {
-    id: "sugar-kush",
-    name: "Sugar Kush",
-    price: 100,
-    category: "special",
-    description: "Sweet kush variety",
-    inStock: true,
-  },
-  { id: "glookies", name: "Glookies", price: 100, category: "special", description: "Cookies hybrid", inStock: true },
-  {
-    id: "sour-diesel",
-    name: "Sour Diesel",
-    price: 60,
-    category: "special",
-    description: "Classic sativa",
-    inStock: true,
-  },
-]
 
 const jointProducts: Product[] = [
   // Indoor Joints
@@ -402,7 +280,7 @@ const baggedProducts: Product[] = [
 ]
 
 export default function CataloguePage() {
-  const [activeTab, setActiveTab] = useState("flower")
+  const [activeTab, setActiveTab] = useState("joints")
   const { dispatch } = useCart()
   const { toast } = useToast()
 
@@ -479,17 +357,14 @@ export default function CataloguePage() {
           <Info className="h-4 w-4" />
           <AlertDescription>
             <strong>Members Only:</strong> This catalogue is exclusively for VSC Private Members Club members. All
-            products comply with South African cannabis regulations. Must be 18+ with valid ID.
+            products comply with South African cannabis regulations. Must be 18+ with valid ID. For flower strains,
+            please visit our Education page.
           </AlertDescription>
         </Alert>
 
         {/* Product Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="flower" className="flex items-center gap-2">
-              <Leaf className="h-4 w-4" />
-              Flower & Bud
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="joints" className="flex items-center gap-2">
               <Zap className="h-4 w-4" />
               Pre-Rolls
@@ -507,33 +382,6 @@ export default function CataloguePage() {
               Bagged
             </TabsTrigger>
           </TabsList>
-
-          {/* Flower & Bud Tab */}
-          <TabsContent value="flower" className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Premium Indoor Strains</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {flowerProducts
-                  .filter((p) => p.category === "indoor")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Specials & Outdoor</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {flowerProducts
-                  .filter((p) => p.category === "special")
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
-            </div>
-          </TabsContent>
 
           {/* Pre-Rolls Tab */}
           <TabsContent value="joints" className="space-y-8">
