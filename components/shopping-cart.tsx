@@ -14,7 +14,8 @@ interface ShoppingCartProps {
   onClose: () => void
 }
 
-export function ShoppingCartComponent({ isOpen, onClose }: ShoppingCartProps) {
+export function ShoppingCart({ isOpen, onClose }: ShoppingCartProps) {
+  // Changed from ShoppingCartComponent to ShoppingCart
   const { state, dispatch } = useCart()
 
   const updateQuantity = (id: string, quantity: number) => {

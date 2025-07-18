@@ -1,387 +1,218 @@
 "use client"
 
+import Link from "next/link"
+
 import { useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useCart } from "@/contexts/cart-context"
 import { useAuth } from "@/contexts/auth-context"
-import { ShoppingCart, Star, Users, Crown } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
 
-const merchandiseItems = [
-  {
-    id: "og-hoodie",
-    name: "OG Logo Hoodie",
-    price: 500,
-    image: "/images/og-hoodie-new.jpg",
-    description:
-      "Premium black hoodie with ornate Herbally Very Special Chronic design featuring decorative cannabis leaf border",
-    category: "Apparel",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    inStock: true,
-    featured: true,
-  },
+interface Product {
+  id: string
+  name: string
+  description: string
+  price: number
+  image: string
+  category: string
+  sizes?: string[]
+}
+
+const products: Product[] = [
   {
     id: "athletics-shirt",
-    name: "Athletics Department T-Shirt",
-    price: 520,
+    name: "Herbally Athletics Shirt",
+    description: "Comfortable and stylish athletic shirt with Herbally branding, perfect for workouts or casual wear.",
+    price: 350.0,
     image: "/images/athletics-shirt-new.jpg",
-    description: "Front and back design featuring Herbally Athletic Department with Very Special Chronic branding",
     category: "Apparel",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    inStock: true,
-    featured: true,
+    sizes: ["S", "M", "L", "XL"],
   },
   {
-    id: "dog-in-em-shirt",
-    name: "Dog In Em T-Shirt",
-    price: 520,
-    image: "/images/dog-in-em-new.jpg",
-    description: "Bold design with three fierce dogs and 'Respect the Plug' message - front and back print",
-    category: "Apparel",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    inStock: true,
-    featured: true,
-  },
-  {
-    id: "vsc-trucker-cap",
-    name: "VSC Trucker Cap",
-    price: 150,
+    id: "cap",
+    name: "Herbally Branded Cap",
+    description: "Classic baseball cap with embroidered Herbally logo. One size fits all with adjustable strap.",
+    price: 200.0,
     image: "/images/cap-new.jpg",
-    description: "Black and white trucker cap with Very Special Chronic logo and cannabis leaf designs",
     category: "Accessories",
     sizes: ["One Size"],
-    inStock: true,
-    featured: false,
   },
   {
-    id: "herbally-tote",
-    name: "Herbally Tote Bag",
-    price: 200,
-    image: "/images/herbally-tote.jpg",
-    description: "Eco-friendly canvas tote bag with Herbally logo",
-    category: "Accessories",
-    sizes: ["One Size"],
-    inStock: true,
-    featured: false,
+    id: "og-hoodie",
+    name: "Herbally OG Hoodie",
+    description:
+      "Premium quality hoodie with a soft fleece lining and classic Herbally OG design. Ideal for warmth and style.",
+    price: 600.0,
+    image: "/images/og-hoodie-new.jpg",
+    category: "Apparel",
+    sizes: ["S", "M", "L", "XL", "XXL"],
   },
   {
-    id: "vsc-stickers",
-    name: "VSC Sticker Pack",
-    price: 50,
-    image: "/images/vsc-stickers.jpg",
-    description: "Pack of 5 premium vinyl stickers with various Herbally designs",
-    category: "Accessories",
-    sizes: ["One Size"],
-    inStock: true,
-    featured: false,
+    id: "dog-in-em",
+    name: "Herbally Dog in 'Em Tee",
+    description:
+      "Unique graphic tee featuring a playful 'Dog in 'Em' design, made from breathable cotton for everyday comfort.",
+    price: 300.0,
+    image: "/images/dog-in-em-new.jpg",
+    category: "Apparel",
+    sizes: ["S", "M", "L", "XL"],
   },
-  {
-    id: "herbally-keychain",
-    name: "Herbally Keychain",
-    price: 80,
-    image: "/images/herbally-keychain.jpg",
-    description: "Metal keychain with embossed Herbally logo",
-    category: "Accessories",
-    sizes: ["One Size"],
-    inStock: true,
-    featured: false,
-  },
-  {
-    id: "vsc-pin-set",
-    name: "VSC Pin Set",
-    price: 120,
-    image: "/images/vsc-pin-set.jpg",
-    description: "Set of 3 enamel pins with VSC and cannabis leaf designs",
-    category: "Accessories",
-    sizes: ["One Size"],
-    inStock: true,
-    featured: false,
-  },
+  // Removed items without real pictures as per user request
+  // {
+  //   id: "tote-bag",
+  //   name: "Herbally Tote Bag",
+  //   description: "Eco-friendly canvas tote bag with Herbally logo, perfect for groceries or daily essentials.",
+  //   price: 200.00,
+  //   image: "/images/herbally-tote.jpg",
+  //   category: "Accessories",
+  //   sizes: ["One Size"],
+  // },
+  // {
+  //   id: "sticker-pack",
+  //   name: "VSC Sticker Pack",
+  //   description: "Pack of 5 premium vinyl stickers with various Herbally designs, great for personalizing your gear.",
+  //   price: 50.00,
+  //   image: "/images/vsc-stickers.jpg",
+  //   category: "Accessories",
+  //   sizes: ["One Size"],
+  // },
+  // {
+  //   id: "keychain",
+  //   name: "Herbally Keychain",
+  //   description: "Durable metal keychain with embossed Herbally logo, a subtle way to show your support.",
+  //   price: 80.00,
+  //   image: "/images/herbally-keychain.jpg",
+  //   category: "Accessories",
+  //   sizes: ["One Size"],
+  // },
+  // {
+  //   id: "pin-set",
+  //   name: "VSC Pin Set",
+  //   description: "Set of 3 enamel pins with VSC and cannabis leaf designs, perfect for jackets or bags.",
+  //   price: 120.00,
+  //   image: "/images/vsc-pin-set.jpg",
+  //   category: "Accessories",
+  //   sizes: ["One Size"],
+  // },
 ]
 
 export default function MerchandisePage() {
-  const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({})
-  const [quantities, setQuantities] = useState<{ [key: string]: number }>({})
   const { addItem } = useCart()
-  const { user } = useAuth()
-  const { toast } = useToast()
+  const { user, isHydrated } = useAuth()
+  const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({})
 
-  const handleSizeChange = (itemId: string, size: string) => {
-    setSelectedSizes((prev) => ({ ...prev, [itemId]: size }))
+  const handleAddToCart = (product: Product) => {
+    const selectedSize = selectedSizes[product.id] || (product.sizes && product.sizes[0])
+    if (!selectedSize) {
+      alert("Please select a size.")
+      return
+    }
+
+    const itemToAdd = {
+      id: `${product.id}-${selectedSize}`, // Unique ID for item + size
+      name: `${product.name} (${selectedSize})`,
+      price: user?.isMember ? product.price * 0.9 : product.price,
+      image: product.image,
+      quantity: 1,
+    }
+    addItem(itemToAdd)
   }
 
-  const handleQuantityChange = (itemId: string, quantity: number) => {
-    setQuantities((prev) => ({ ...prev, [itemId]: quantity }))
+  const handleSizeChange = (productId: string, size: string) => {
+    setSelectedSizes((prev) => ({ ...prev, [productId]: size }))
   }
 
-  const getMemberPrice = (price: number) => {
-    return user?.hasMembership ? price * 0.9 : price
+  if (!isHydrated) {
+    return (
+      <div className="flex min-h-[calc(100vh-64px)] items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    )
   }
-
-  const handleAddToCart = (item: any) => {
-    const size = selectedSizes[item.id] || item.sizes[0]
-    const quantity = quantities[item.id] || 1
-    const finalPrice = getMemberPrice(item.price)
-
-    addItem({
-      id: `${item.id}-${size}`,
-      name: `${item.name} (${size})`,
-      price: finalPrice,
-      image: item.image,
-      size: size,
-    })
-
-    toast({
-      title: "Added to cart",
-      description: `${item.name} (${size}) x${quantity} added to your cart.${user?.hasMembership ? " Member discount applied!" : ""}`,
-    })
-  }
-
-  const featuredItems = merchandiseItems.filter((item) => item.featured)
-  const otherItems = merchandiseItems.filter((item) => !item.featured)
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Herbally Merchandise</h1>
-        <p className="text-xl text-gray-600 mb-6">Premium apparel and accessories for the cannabis community</p>
-
-        {user?.hasMembership ? (
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-4 max-w-md mx-auto">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <Crown className="h-5 w-5 text-yellow-600" />
-              <span className="font-semibold text-yellow-800">VSC Member Active</span>
-            </div>
-            <p className="text-yellow-700 text-sm">
-              You're getting <strong>10% off</strong> all merchandise!
-            </p>
-          </div>
-        ) : (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 max-w-md mx-auto">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <Users className="h-5 w-5 text-green-600" />
-              <span className="font-semibold text-green-800">Join VSC for Benefits</span>
-            </div>
-            <p className="text-green-700 text-sm">
-              Join for R41/month and get <strong>10% off</strong> all merchandise
-            </p>
-            <Button size="sm" className="mt-2" asChild>
-              <a href="/membership">Join Now</a>
-            </Button>
-          </div>
+    <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8">
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Herbally Merchandise</h1>
+        <p className="mt-3 text-xl text-gray-600 dark:text-gray-400">
+          Explore our exclusive collection of Herbally branded apparel and accessories.
+        </p>
+        {user?.isMember && (
+          <p className="mt-2 text-lg font-semibold text-green-600 dark:text-green-400">
+            As a VSC Member, you get 10% off all merchandise!
+          </p>
+        )}
+        {!user?.isMember && (
+          <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
+            <Link href="/membership" className="text-primary hover:underline">
+              Join VSC Membership
+            </Link>{" "}
+            to get 10% off all merchandise!
+          </p>
         )}
       </div>
 
-      {/* Featured Products */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold mb-6 flex items-center">
-          <Star className="h-6 w-6 text-yellow-500 mr-2" />
-          Featured Products
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredItems.map((item) => (
-            <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <CardHeader className="p-0">
-                <div className="relative">
-                  <Image
-                    src={item.image || "/placeholder.svg"}
-                    alt={item.name}
-                    width={400}
-                    height={400}
-                    className="w-full h-64 object-cover"
-                  />
-                  {item.featured && <Badge className="absolute top-2 left-2 bg-yellow-500 text-black">Featured</Badge>}
-                  {user?.hasMembership && <Badge className="absolute top-2 right-2 bg-green-500">10% Off</Badge>}
-                  {item.inStock ? (
-                    <Badge className="absolute bottom-2 right-2 bg-green-500">In Stock</Badge>
-                  ) : (
-                    <Badge className="absolute bottom-2 right-2 bg-red-500">Out of Stock</Badge>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="p-4">
-                <CardTitle className="text-lg mb-2">{item.name}</CardTitle>
-                <p className="text-gray-600 text-sm mb-3">{item.description}</p>
-                <div className="flex justify-between items-center mb-3">
-                  <div className="flex flex-col">
-                    {user?.hasMembership ? (
-                      <>
-                        <span className="text-2xl font-bold text-green-600">
-                          R{getMemberPrice(item.price).toFixed(2)}
-                        </span>
-                        <span className="text-sm text-gray-500 line-through">R{item.price.toFixed(2)}</span>
-                      </>
-                    ) : (
-                      <span className="text-2xl font-bold text-green-600">R{item.price.toFixed(2)}</span>
-                    )}
-                  </div>
-                  <Badge variant="outline">{item.category}</Badge>
-                </div>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {products.map((product) => {
+          const displayPrice = user?.isMember ? product.price * 0.9 : product.price
+          const originalPrice = product.price
 
-                <div className="space-y-3">
-                  {/* Size Selection */}
-                  <div>
-                    <label className="text-sm font-medium mb-1 block">Size:</label>
+          return (
+            <Card key={product.id} className="flex flex-col overflow-hidden">
+              <div className="relative h-60 w-full">
+                <Image
+                  src={product.image || "/placeholder.svg"}
+                  alt={product.name}
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-105"
+                />
+                <Badge className="absolute top-2 left-2 text-xs">{product.category}</Badge>
+              </div>
+              <CardContent className="flex flex-grow flex-col p-4">
+                <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>
+                <CardDescription className="mt-1 text-sm text-gray-500 dark:text-gray-400 flex-grow">
+                  {product.description}
+                </CardDescription>
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="flex flex-col">
+                    {user?.isMember && (
+                      <span className="text-sm text-gray-500 line-through">R{originalPrice.toFixed(2)}</span>
+                    )}
+                    <span className="text-xl font-bold text-gray-900 dark:text-gray-50">
+                      R{displayPrice.toFixed(2)}
+                    </span>
+                  </div>
+                  {product.sizes && product.sizes.length > 0 && (
                     <Select
-                      value={selectedSizes[item.id] || item.sizes[0]}
-                      onValueChange={(value) => handleSizeChange(item.id, value)}
+                      onValueChange={(value) => handleSizeChange(product.id, value)}
+                      defaultValue={product.sizes[0]}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
+                      <SelectTrigger className="w-[100px]">
+                        <SelectValue placeholder="Size" />
                       </SelectTrigger>
                       <SelectContent>
-                        {item.sizes.map((size) => (
+                        {product.sizes.map((size) => (
                           <SelectItem key={size} value={size}>
                             {size}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
-
-                  {/* Quantity Selection */}
-                  <div>
-                    <label className="text-sm font-medium mb-1 block">Quantity:</label>
-                    <Select
-                      value={(quantities[item.id] || 1).toString()}
-                      onValueChange={(value) => handleQuantityChange(item.id, Number.parseInt(value))}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {[1, 2, 3, 4, 5].map((num) => (
-                          <SelectItem key={num} value={num.toString()}>
-                            {num}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="p-4 pt-0">
-                <Button onClick={() => handleAddToCart(item)} disabled={!item.inStock} className="w-full">
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  {item.inStock ? "Add to Cart" : "Out of Stock"}
+                <Button className="w-full" onClick={() => handleAddToCart(product)}>
+                  Add to Cart
                 </Button>
               </CardFooter>
             </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Other Products */}
-      <section>
-        <h2 className="text-2xl font-bold mb-6">All Products</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {otherItems.map((item) => (
-            <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <CardHeader className="p-0">
-                <div className="relative">
-                  <Image
-                    src={item.image || "/placeholder.svg"}
-                    alt={item.name}
-                    width={300}
-                    height={300}
-                    className="w-full h-48 object-cover"
-                  />
-                  {user?.hasMembership && <Badge className="absolute top-2 left-2 bg-green-500">10% Off</Badge>}
-                  {item.inStock ? (
-                    <Badge className="absolute top-2 right-2 bg-green-500">In Stock</Badge>
-                  ) : (
-                    <Badge className="absolute top-2 right-2 bg-red-500">Out of Stock</Badge>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="p-3">
-                <CardTitle className="text-base mb-2">{item.name}</CardTitle>
-                <p className="text-gray-600 text-xs mb-2 line-clamp-2">{item.description}</p>
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex flex-col">
-                    {user?.hasMembership ? (
-                      <>
-                        <span className="text-lg font-bold text-green-600">
-                          R{getMemberPrice(item.price).toFixed(2)}
-                        </span>
-                        <span className="text-xs text-gray-500 line-through">R{item.price.toFixed(2)}</span>
-                      </>
-                    ) : (
-                      <span className="text-lg font-bold text-green-600">R{item.price.toFixed(2)}</span>
-                    )}
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    {item.category}
-                  </Badge>
-                </div>
-
-                <div className="space-y-2">
-                  {/* Size Selection */}
-                  <Select
-                    value={selectedSizes[item.id] || item.sizes[0]}
-                    onValueChange={(value) => handleSizeChange(item.id, value)}
-                  >
-                    <SelectTrigger className="h-8">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {item.sizes.map((size) => (
-                        <SelectItem key={size} value={size}>
-                          {size}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  {/* Quantity Selection */}
-                  <Select
-                    value={(quantities[item.id] || 1).toString()}
-                    onValueChange={(value) => handleQuantityChange(item.id, Number.parseInt(value))}
-                  >
-                    <SelectTrigger className="h-8">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[1, 2, 3, 4, 5].map((num) => (
-                        <SelectItem key={num} value={num.toString()}>
-                          {num}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardContent>
-              <CardFooter className="p-3 pt-0">
-                <Button onClick={() => handleAddToCart(item)} disabled={!item.inStock} className="w-full h-8 text-xs">
-                  <ShoppingCart className="h-3 w-3 mr-1" />
-                  {item.inStock ? "Add to Cart" : "Out of Stock"}
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* VSC Membership CTA */}
-      {!user?.hasMembership && (
-        <section className="mt-12 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Join VSC Private Members Club</h2>
-          <p className="text-lg mb-6">
-            Get 10% off all merchandise, exclusive catalogue access, and member-only benefits
-          </p>
-          <div className="flex items-center justify-center space-x-4">
-            <span className="text-3xl font-bold">R41/month</span>
-            <Button size="lg" variant="secondary" asChild>
-              <a href="/membership">Join Now</a>
-            </Button>
-          </div>
-        </section>
-      )}
+          )
+        })}
+      </div>
     </div>
   )
 }

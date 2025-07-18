@@ -1,155 +1,95 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useState, useEffect, useCallback } from "react"
 
 interface User {
-  id: string
-  email: string
-  name: string
-  hasMembership: boolean
-  membershipExpiry?: Date
-  joinedDate: Date
+  username: string
+  isMember: boolean
+  membershipExpiry?: string // "unlimited" or a date string
 }
 
 interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<boolean>
-  signup: (email: string, password: string, name: string) => Promise<boolean>
+  login: (username: string, password: string) => Promise<boolean>
+  signup: (username: string, password: string) => Promise<boolean>
   logout: () => void
-  purchaseMembership: () => Promise<boolean>
-  isLoading: boolean
+  isHydrated: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-// Mock user database (in real app, this would be a proper database)
-const mockUsers: { [key: string]: User & { password: string } } = {
-  "demo@herbally.co.za": {
-    id: "1",
-    email: "demo@herbally.co.za",
-    name: "Demo User",
-    password: "password123",
-    hasMembership: true,
-    membershipExpiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-    joinedDate: new Date("2024-01-01"),
-  },
-}
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
-    // Check for stored user session
-    const storedUser = localStorage.getItem("herbally-user")
+    const storedUser = localStorage.getItem("currentUser")
     if (storedUser) {
-      try {
-        const userData = JSON.parse(storedUser)
-        setUser(userData)
-      } catch (error) {
-        console.error("Error parsing stored user:", error)
-        localStorage.removeItem("herbally-user")
-      }
+      setUser(JSON.parse(storedUser))
     }
-    setIsLoading(false)
+    setIsHydrated(true)
   }, [])
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    setIsLoading(true)
+  const login = useCallback(async (username, password) => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 500))
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    const mockUser = mockUsers[email]
-    if (mockUser && mockUser.password === password) {
-      const { password: _, ...userWithoutPassword } = mockUser
-      setUser(userWithoutPassword)
-      localStorage.setItem("herbally-user", JSON.stringify(userWithoutPassword))
-      setIsLoading(false)
+    if (username === "dank4lucnch" && password === "thabiso00") {
+      const specialUser: User = {
+        username: "dank4lucnch",
+        isMember: true,
+        membershipExpiry: "unlimited",
+      }
+      setUser(specialUser)
+      localStorage.setItem("currentUser", JSON.stringify(specialUser))
       return true
+    } else {
+      // For other users, simulate a basic login
+      // In a real app, you'd check against a database
+      const storedUsers = JSON.parse(localStorage.getItem("users") || "{}")
+      if (storedUsers[username] === password) {
+        const regularUser: User = {
+          username,
+          isMember: false, // Default to non-member, they need to purchase
+          membershipExpiry: undefined,
+        }
+        setUser(regularUser)
+        localStorage.setItem("currentUser", JSON.stringify(regularUser))
+        return true
+      }
     }
-
-    setIsLoading(false)
     return false
-  }
+  }, [])
 
-  const signup = async (email: string, password: string, name: string): Promise<boolean> => {
-    setIsLoading(true)
+  const signup = useCallback(async (username, password) => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 500))
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Check if user already exists
-    if (mockUsers[email]) {
-      setIsLoading(false)
-      return false
+    const storedUsers = JSON.parse(localStorage.getItem("users") || "{}")
+    if (storedUsers[username]) {
+      return false // User already exists
     }
 
-    // Create new user
-    const newUser: User & { password: string } = {
-      id: Date.now().toString(),
-      email,
-      name,
-      password,
-      hasMembership: false,
-      joinedDate: new Date(),
+    storedUsers[username] = password
+    localStorage.setItem("users", JSON.stringify(storedUsers))
+
+    const newUser: User = {
+      username,
+      isMember: false, // New users are not members by default
+      membershipExpiry: undefined,
     }
-
-    mockUsers[email] = newUser
-
-    const { password: _, ...userWithoutPassword } = newUser
-    setUser(userWithoutPassword)
-    localStorage.setItem("herbally-user", JSON.stringify(userWithoutPassword))
-    setIsLoading(false)
+    setUser(newUser)
+    localStorage.setItem("currentUser", JSON.stringify(newUser))
     return true
-  }
+  }, [])
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null)
-    localStorage.removeItem("herbally-user")
-  }
+    localStorage.removeItem("currentUser")
+  }, [])
 
-  const purchaseMembership = async (): Promise<boolean> => {
-    if (!user) return false
-
-    setIsLoading(true)
-
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    const updatedUser = {
-      ...user,
-      hasMembership: true,
-      membershipExpiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-    }
-
-    setUser(updatedUser)
-    localStorage.setItem("herbally-user", JSON.stringify(updatedUser))
-
-    // Update mock database
-    if (mockUsers[user.email]) {
-      mockUsers[user.email] = { ...mockUsers[user.email], ...updatedUser }
-    }
-
-    setIsLoading(false)
-    return true
-  }
-
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        signup,
-        logout,
-        purchaseMembership,
-        isLoading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={{ user, login, signup, logout, isHydrated }}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {

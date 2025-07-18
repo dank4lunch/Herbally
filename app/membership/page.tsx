@@ -1,200 +1,164 @@
 "use client"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { CheckCircle, Crown, Loader2, Star, Users } from "lucide-react"
+import { CheckCircle2, Crown } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
-import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function MembershipPage() {
-  const [isProcessing, setIsProcessing] = useState(false)
-  const { user, purchaseMembership } = useAuth()
-  const { toast } = useToast()
+  const { user, isHydrated } = useAuth()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   const handlePurchaseMembership = async () => {
-    setIsProcessing(true)
-    const success = await purchaseMembership()
-
-    if (success) {
-      toast({
-        title: "Welcome to VSC!",
-        description: "Your membership is now active. Enjoy your benefits!",
-      })
-    } else {
-      toast({
-        title: "Payment failed",
-        description: "There was an issue processing your payment. Please try again.",
-        variant: "destructive",
-      })
+    if (!user) {
+      router.push("/login")
+      return
     }
-    setIsProcessing(false)
+    setLoading(true)
+    // Simulate membership purchase
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    // In a real app, you'd update the user's membership status in your backend
+    // For this demo, we'll just redirect and assume success
+    alert("Membership purchased successfully! (Demo)")
+    router.push("/") // Redirect to home or profile page
+    setLoading(false)
   }
 
-  const membershipBenefits = [
-    "10% discount on all merchandise",
-    "Exclusive access to VSC catalogue",
-    "Priority customer support",
-    "Early access to new products",
-    "Member-only educational content",
-    "Special event invitations",
-    "Monthly strain recommendations",
-    "Free delivery on orders over R300",
-  ]
+  if (!isHydrated) {
+    return (
+      <div className="flex min-h-[calc(100vh-64px)] items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    )
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-4">
-            <div className="bg-gradient-to-br from-yellow-500 to-orange-600 p-4 rounded-full">
-              <Crown className="h-12 w-12 text-white" />
-            </div>
-          </div>
-          <h1 className="text-4xl font-bold mb-4">VSC Private Members Club</h1>
-          <p className="text-xl text-muted-foreground">Join our exclusive community and unlock premium benefits</p>
+    <div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center bg-gray-100 py-12 dark:bg-gray-950">
+      <div className="container px-4 md:px-6">
+        <div className="mx-auto max-w-3xl text-center">
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">VSC Membership</h1>
+          <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
+            Unlock exclusive benefits and elevate your Herbally experience.
+          </p>
         </div>
 
-        {/* Current Status */}
-        {user && (
-          <div className="mb-8">
-            <Alert className={user.hasMembership ? "border-green-200 bg-green-50" : "border-yellow-200 bg-yellow-50"}>
-              <Users className="h-4 w-4" />
-              <AlertDescription className="flex items-center justify-between">
-                <span>
-                  {user.hasMembership
-                    ? `Welcome back, ${user.name}! Your VSC membership is active.`
-                    : `Hi ${user.name}, you're not currently a VSC member.`}
-                </span>
-                {user.hasMembership && (
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
-                    Active Member
-                  </Badge>
-                )}
-              </AlertDescription>
-            </Alert>
-          </div>
-        )}
-
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Membership Card */}
-          <Card className="relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full -translate-y-16 translate-x-16 opacity-10" />
+        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-2">
+          {/* Free Tier Card */}
+          <Card className="flex flex-col justify-between">
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-2xl">VSC Membership</CardTitle>
-                <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
-                  <Star className="h-3 w-3 mr-1" />
-                  Premium
-                </Badge>
-              </div>
-              <CardDescription>Unlock exclusive benefits and join our premium community</CardDescription>
+              <CardTitle className="text-2xl font-bold">Free Tier</CardTitle>
+              <CardDescription>Access to basic features.</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="text-center mb-6">
-                <div className="text-4xl font-bold text-green-600 mb-2">R41</div>
-                <div className="text-muted-foreground">per month</div>
+            <CardContent className="space-y-4">
+              <div className="text-4xl font-bold">
+                R0<span className="text-lg font-normal text-gray-500">/month</span>
               </div>
-
-              <div className="space-y-3">
-                {membershipBenefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm">{benefit}</span>
-                  </div>
-                ))}
-              </div>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Browse full catalogue
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Order tracking
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Standard support
+                </li>
+              </ul>
             </CardContent>
             <CardFooter>
-              {!user ? (
-                <div className="w-full text-center">
-                  <p className="text-sm text-muted-foreground mb-4">Please sign in to purchase membership</p>
-                  <Button asChild className="w-full">
-                    <a href="/login">Sign In</a>
-                  </Button>
-                </div>
-              ) : user.hasMembership ? (
-                <div className="w-full text-center">
-                  <Badge variant="secondary" className="bg-green-100 text-green-800 mb-4">
-                    <CheckCircle className="h-4 w-4 mr-2" />
-                    Active Membership
-                  </Badge>
-                  <p className="text-sm text-muted-foreground">
-                    {user.membershipExpiry && `Expires: ${new Date(user.membershipExpiry).toLocaleDateString()}`}
-                  </p>
-                </div>
+              {user && !user.isMember ? (
+                <Button variant="outline" className="w-full bg-transparent" disabled>
+                  Current Plan
+                </Button>
               ) : (
-                <Button
-                  onClick={handlePurchaseMembership}
-                  disabled={isProcessing}
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
-                >
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <Crown className="mr-2 h-4 w-4" />
-                      Join VSC - R41/month
-                    </>
-                  )}
+                <Button variant="outline" className="w-full bg-transparent" disabled={user?.isMember}>
+                  {user?.isMember ? "Already a Member" : "Get Started"}
                 </Button>
               )}
             </CardFooter>
           </Card>
 
-          {/* Why Join Section */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Users className="h-5 w-5 mr-2 text-green-600" />
-                  Exclusive Community
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Join a community of cannabis enthusiasts and gain access to exclusive content, events, and educational
-                  resources.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Star className="h-5 w-5 mr-2 text-yellow-500" />
-                  Premium Benefits
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Save money with member discounts, get priority support, and enjoy exclusive access to our premium
-                  catalogue.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                  Quality Guarantee
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  All VSC members receive our quality guarantee and can cancel their membership at any time.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          {/* Premium Membership Card */}
+          <Card className="flex flex-col justify-between border-2 border-green-500 shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold text-green-600">
+                <Crown className="inline-block h-6 w-6 mr-2 text-yellow-500 fill-yellow-500" />
+                VSC Premium
+              </CardTitle>
+              <CardDescription>Unlock all exclusive benefits.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="text-4xl font-bold">
+                R41<span className="text-lg font-normal text-gray-500">/month</span>
+              </div>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  All Free Tier benefits
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  10% discount on all merchandise
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Early access to new products
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Priority customer support
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Exclusive member-only content
+                </li>
+                {user?.username === "dank4lucnch" && user.isMember && (
+                  <li className="flex items-center gap-2 text-purple-600 font-semibold">
+                    <CheckCircle2 className="h-5 w-5 text-purple-500" />
+                    Unlimited Lifetime Membership
+                  </li>
+                )}
+              </ul>
+            </CardContent>
+            <CardFooter>
+              {user?.isMember ? (
+                user.username === "dank4lucnch" ? (
+                  <Button className="w-full" disabled>
+                    Unlimited Member
+                  </Button>
+                ) : (
+                  <Button className="w-full" disabled>
+                    Current Plan
+                  </Button>
+                )
+              ) : (
+                <Button className="w-full" onClick={handlePurchaseMembership} disabled={loading}>
+                  {loading ? "Processing..." : "Get Premium"}
+                </Button>
+              )}
+            </CardFooter>
+          </Card>
         </div>
+
+        {user && (
+          <div className="mt-12 text-center text-gray-600 dark:text-gray-400">
+            {user.isMember ? (
+              user.membershipExpiry === "unlimited" ? (
+                <p>You have an **unlimited lifetime VSC membership**. Enjoy all benefits!</p>
+              ) : (
+                <p>Your current VSC membership is active. It expires on: **{user.membershipExpiry || "N/A"}**.</p>
+              )
+            ) : (
+              <p>You are currently on the Free Tier. Upgrade to VSC Premium to unlock more benefits!</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
