@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -20,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
 
 export function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -32,9 +31,8 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/90">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold" prefetch={false}>
-          <LeafIcon className="h-6 w-6 text-green-600" />
+          <Image src="/images/herbally-logo.jpeg" alt="Herbally Logo" width={120} height={40} className="h-auto" />
           <span className="sr-only">Herbally</span>
-          Herbally
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
           <Link href="/" className="hover:text-green-600 dark:hover:text-green-400" prefetch={false}>
@@ -126,8 +124,14 @@ export function Navbar() {
             <SheetContent side="left">
               <div className="flex flex-col gap-6 p-6">
                 <Link href="/" className="flex items-center gap-2 text-lg font-semibold" prefetch={false}>
-                  <LeafIcon className="h-6 w-6 text-green-600" />
-                  Herbally
+                  <Image
+                    src="/images/herbally-logo.jpeg"
+                    alt="Herbally Logo"
+                    width={120}
+                    height={40}
+                    className="h-auto"
+                  />
+                  <span className="sr-only">Herbally</span>
                 </Link>
                 <nav className="grid gap-4 text-sm font-medium">
                   <Link href="/" className="flex items-center gap-2 hover:text-green-600" prefetch={false}>
@@ -182,25 +186,5 @@ export function Navbar() {
       </div>
       <ShoppingCartComponent isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </header>
-  )
-}
-
-function LeafIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.5 10-10 10Z" />
-      <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
-    </svg>
   )
 }

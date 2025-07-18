@@ -22,10 +22,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 // Mock user database (in real app, this would be a proper database)
 const mockUsers: { [key: string]: User & { password: string } } = {
   dank4lunch: {
-    // Corrected username to dank4lunch
     username: "dank4lunch",
     isMember: true,
     membershipExpiry: "unlimited", // Unlimited membership for this user
+    password: "thabiso", // Updated password to 'thabiso'
   },
   // Example of a regular user who is not a member by default
   regularuser: {
@@ -70,8 +70,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return false // User already exists
     }
 
-    storedUsers[username] = password
-    localStorage.setItem("users", JSON.stringify(storedUsers))
+    // Add new user to mockUsers and localStorage
+    mockUsers[username] = {
+      username,
+      isMember: false,
+      password,
+    }
+    localStorage.setItem("users", JSON.stringify(mockUsers)) // Update localStorage with all mock users
 
     const newUser: User = {
       username,

@@ -48,7 +48,7 @@ const strains: Strain[] = [
     floweringTime: "8-9 weeks",
     description:
       "Sweet tropical sativa with distinct pineapple flavors that provide an uplifting and social high perfect for daytime use.",
-    image: "/placeholder.svg?height=300&width=300", // Placeholder image
+    image: "/images/strains/pineapple.jpeg", // Added image
     medicalBenefits: ["Anxiety", "Depression", "Chronic Pain", "Loss of Appetite"],
   },
   {
@@ -76,7 +76,7 @@ const strains: Strain[] = [
     floweringTime: "9-10 weeks",
     description:
       "High-potency sativa with sweet candy-like flavors that deliver a rush of energy and euphoric creativity.",
-    image: "/placeholder.svg?height=300&width=300", // Placeholder image
+    image: "/images/strains/sugar-rush.jpeg", // Added image
     medicalBenefits: ["Depression", "Chronic Pain", "Fatigue", "Mood Disorders"],
   },
   {
@@ -188,7 +188,7 @@ const strains: Strain[] = [
     floweringTime: "8-9 weeks",
     description:
       "Classic kush variety with sweet candy-like flavors providing traditional indica relaxation and peace.",
-    image: "/placeholder.svg?height=300&width=300", // Placeholder image
+    image: "/images/strains/sugar-kush.jpeg", // Added image
     medicalBenefits: ["Chronic Pain", "Insomnia", "Stress", "Muscle Tension"],
   },
 
@@ -260,7 +260,7 @@ const strains: Strain[] = [
     floweringTime: "9-10 weeks",
     description:
       "Premium hybrid with complex dessert flavors and perfectly balanced effects combining the best of indica and sativa.",
-    image: "/placeholder.svg?height=300&width=300", // Placeholder image
+    image: "/images/strains/rlc.jpeg", // Added image
     medicalBenefits: ["Chronic Pain", "Anxiety", "Depression", "Insomnia"],
   },
   {
