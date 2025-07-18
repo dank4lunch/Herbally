@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for elegant styling -->
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d4a2b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a2e19;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Cannabis leaf pattern -->
+    <g id="cannabisLeaf">
+      <path d="M0,10 Q2,8 4,9 Q6,7 8,9 Q10,6 12,9 Q14,7 16,9 Q18,8 20,10 Q18,12 16,11 Q14,13 12,11 Q10,14 8,11 Q6,13 4,11 Q2,12 0,10 Z" 
+            fill="currentColor" opacity="0.6"/>
+    </g>
+    
+    <!-- Decorative vine -->
+    <g id="vine">
+      <path d="M0,0 Q10,5 20,0 Q30,5 40,0" stroke="currentColor" stroke-width="1" fill="none" opacity="0.5"/>
+    </g>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f8f9fa" opacity="0"/>
+  
+  <!-- Ornate border frame -->
+  <rect x="20" y="20" width="360" height="260" rx="15" fill="none" stroke="#2d4a2b" stroke-width="2" opacity="0.3"/>
+  <rect x="30" y="30" width="340" height="240" rx="10" fill="none" stroke="#2d4a2b" stroke-width="1" opacity="0.2"/>
+  
+  <!-- Corner decorative elements -->
+  <g transform="translate(40,40)" color="#2d4a2b">
+    <use href="#cannabisLeaf" transform="rotate(-45)"/>
+    <use href="#cannabisLeaf" transform="translate(10,5) rotate(-30)"/>
+  </g>
+  
+  <g transform="translate(340,40)" color="#2d4a2b">
+    <use href="#cannabisLeaf" transform="rotate(45)"/>
+    <use href="#cannabisLeaf" transform="translate(-10,5) rotate(30)"/>
+  </g>
+  
+  <g transform="translate(40,230)" color="#2d4a2b">
+    <use href="#cannabisLeaf" transform="rotate(-135)"/>
+    <use href="#cannabisLeaf" transform="translate(10,-5) rotate(-150)"/>
+  </g>
+  
+  <g transform="translate(340,230)" color="#2d4a2b">
+    <use href="#cannabisLeaf" transform="rotate(135)"/>
+    <use href="#cannabisLeaf" transform="translate(-10,-5) rotate(150)"/>
+  </g>
+  
+  <!-- Side cannabis leaf decorations -->
+  <g transform="translate(60,80)" color="#2d4a2b">
+    <use href="#cannabisLeaf" transform="scale(1.2)"/>
+    <use href="#cannabisLeaf" transform="translate(0,20) scale(0.8)"/>
+    <use href="#cannabisLeaf" transform="translate(0,35) scale(1.1)"/>
+    <use href="#cannabisLeaf" transform="translate(0,55) scale(0.9)"/>
+    <use href="#cannabisLeaf" transform="translate(0,70) scale(1.0)"/>
+  </g>
+  
+  <g transform="translate(320,80)" color="#2d4a2b">
+    <use href="#cannabisLeaf" transform="scale(1.2) rotate(180)"/>
+    <use href="#cannabisLeaf" transform="translate(0,20) scale(0.8) rotate(180)"/>
+    <use href="#cannabisLeaf" transform="translate(0,35) scale(1.1) rotate(180)"/>
+    <use href="#cannabisLeaf" transform="translate(0,55) scale(0.9) rotate(180)"/>
+    <use href="#cannabisLeaf" transform="translate(0,70) scale(1.0) rotate(180)"/>
+  </g>
+  
+  <!-- Top decorative text -->
+  <text x="200" y="70" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#2d4a2b" opacity="0.8">
+    Marijuanas Finest
+  </text>
+  <text x="200" y="85" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#2d4a2b" opacity="0.6">
+    1755
+  </text>
+  
+  <!-- Main Herbally text -->
+  <text x="200" y="140" text-anchor="middle" font-family="serif" font-size="42" font-weight="bold" fill="url(#textGradient)">
+    Herbally
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="200" y="165" text-anchor="middle" font-family="serif" font-size="14" font-weight="600" fill="#2d4a2b" letter-spacing="2px">
+    VERY SPECIAL
+  </text>
+  <text x="200" y="185" text-anchor="middle" font-family="serif" font-size="18" font-weight="600" fill="#2d4a2b" letter-spacing="3px">
+    CHRONIC
+  </text>
+  
+  <!-- Bottom decorative vines -->
+  <g transform="translate(80,220)" color="#2d4a2b">
+    <use href="#vine" transform="scale(2,1)"/>
+    <use href="#vine" transform="translate(0,5) scale(2.2,1)"/>
+  </g>
+  
+  <g transform="translate(80,240)" color="#2d4a2b">
+    <use href="#vine" transform="scale(2,1)"/>
+    <use href="#vine" transform="translate(0,5) scale(2.2,1)"/>
+  </g>
+  
+  <!-- Additional decorative elements -->
+  <circle cx="120" cy="110" r="2" fill="#2d4a2b" opacity="0.4"/>
+  <circle cx="280" cy="110" r="2" fill="#2d4a2b" opacity="0.4"/>
+  <circle cx="110" cy="200" r="1.5" fill="#2d4a2b" opacity="0.3"/>
+  <circle cx="290" cy="200" r="1.5" fill="#2d4a2b" opacity="0.3"/>
+</svg>
