@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Leaf, Phone, Mail, MapPin, Clock } from "lucide-react"
 
 const strains = ["White Widow", "Blue Dream", "Girl Scout Cookies", "OG Kush", "Sour Diesel", "Purple Haze"]
@@ -11,10 +12,13 @@ export function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="bg-green-600 p-2 rounded-full">
-                <Leaf className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-xl font-bold">Herbally</span>
+              <Image 
+                src="/images/herbally-logo-compact.svg" 
+                alt="Herbally Logo" 
+                width={120} 
+                height={36} 
+                className="h-auto max-h-9 w-auto herbally-logo herbally-logo-footer" 
+              />
             </div>
             <p className="text-gray-300 text-sm">
               South Africa's premier cannabis community offering premium products, education, and VSC membership

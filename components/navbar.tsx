@@ -31,7 +31,13 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/90">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold" prefetch={false}>
-          <Image src="/images/herbally-logo.jpeg" alt="Herbally Logo" width={120} height={40} className="h-auto" />
+          <Image 
+            src="/images/herbally-logo-compact.svg" 
+            alt="Herbally Logo" 
+            width={160} 
+            height={48} 
+            className="h-auto max-h-12 w-auto herbally-logo herbally-logo-navbar" 
+          />
           <span className="sr-only">Herbally</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">

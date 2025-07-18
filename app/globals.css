@@ -79,3 +79,27 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* Logo styling for better blending */
+.herbally-logo {
+  transition: all 0.3s ease;
+}
+
+.herbally-logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 4px 8px rgba(45, 74, 43, 0.15));
+}
+
+/* Dark mode logo adjustments */
+.dark .herbally-logo-navbar {
+  filter: brightness(0.9) contrast(1.1);
+}
+
+.dark .herbally-logo-footer {
+  filter: brightness(0) invert(1) opacity(0.9);
+}
+
+/* Light mode footer logo */
+.herbally-logo-footer {
+  filter: brightness(0) invert(1);
+}
