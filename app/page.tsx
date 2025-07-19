@@ -5,7 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/contexts/auth-context"
 import Link from "next/link"
 import Image from "next/image"
-import { CheckCircle2, Crown, Leaf, Truck, MessageCircleQuestionIcon as QuestionCircleIcon } from "lucide-react" // Added QuestionCircleIcon
+import { CheckCircle2, Crown, Leaf, Truck, MessageCircleQuestionIcon as QuestionCircleIcon, Shield, Clock, Award, Users, Star } from "lucide-react"
+import { Stats } from "@/components/stats"
+import { Testimonials } from "@/components/testimonials"
+import { CTA } from "@/components/cta"
 
 export default function HomePage() {
   const { user, isHydrated } = useAuth()
@@ -24,66 +27,100 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-green-50 to-emerald-50">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_500px]">
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    {user ? (
-                      <>
-                        Welcome back, {user.username}!
-                        {user.isMember && (
-                          <span className="ml-2 inline-flex items-center rounded-full bg-yellow-100 px-3 py-0.5 text-sm font-medium text-yellow-800">
-                            <Crown className="mr-1 h-4 w-4" /> VSC Member
-                          </span>
-                        )}
-                      </>
-                    ) : (
-                      "Discover Premium Cannabis Products"
-                    )}
-                  </h1>
-                  <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                    {user && user.isMember ? (
-                      <>
-                        Your unlimited membership is active. Enjoy exclusive benefits and discounts on all products!
-                        <br />
-                        <Link href="/catalogue" className="text-emerald-600 hover:underline">
-                          Shop now and save!
-                        </Link>
-                      </>
-                    ) : (
-                      "Herbally offers a curated selection of high-quality cannabis products, from premium strains to essential accessories. Join our community for exclusive benefits."
-                    )}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button asChild>
-                    <Link href="/catalogue">Explore Catalogue</Link>
+            <div className="flex flex-col justify-center items-center text-center space-y-8">
+              <div className="space-y-4 max-w-4xl">
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                  {user ? (
+                    <>
+                      Welcome back, {user.username}!
+                      {user.isMember && (
+                        <span className="ml-2 inline-flex items-center rounded-full bg-yellow-100 px-3 py-0.5 text-sm font-medium text-yellow-800">
+                          <Crown className="mr-1 h-4 w-4" /> VSC Member
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    "Discover Premium Cannabis Products"
+                  )}
+                </h1>
+                <p className="max-w-[800px] mx-auto text-gray-500 md:text-xl dark:text-gray-400">
+                  {user && user.isMember ? (
+                    <>
+                      Your unlimited membership is active. Enjoy exclusive benefits and discounts on all products!
+                      <br />
+                      <Link href="/catalogue" className="text-emerald-600 hover:underline">
+                        Shop now and save!
+                      </Link>
+                    </>
+                  ) : (
+                    "Herbally offers a curated selection of high-quality cannabis products, from premium strains to essential accessories. Join our community for exclusive benefits and experience the finest cannabis culture."
+                  )}
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <Button asChild size="lg">
+                  <Link href="/catalogue">Explore Catalogue</Link>
+                </Button>
+                {!user && (
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/signup">Join VSC Membership</Link>
                   </Button>
-                  {!user && (
-                    <Button asChild variant="outline">
-                      <Link href="/signup">Join VSC Membership</Link>
-                    </Button>
-                  )}
-                  {user && !user.isMember && (
-                    <Button asChild variant="outline">
-                      <Link href="/membership">Upgrade Membership</Link>
-                    </Button>
-                  )}
+                )}
+                {user && !user.isMember && (
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/membership">Upgrade Membership</Link>
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <Stats />
+
+        {/* About Herbally Section */}
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-950">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+              <div className="space-y-4">
+                <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                  About Herbally
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Your Trusted Cannabis Partner</h2>
+                <p className="text-gray-500 md:text-lg dark:text-gray-400">
+                  Founded with a passion for cannabis culture and quality, Herbally has become a leading name in premium cannabis products. We believe in the power of nature and the importance of community.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-green-600" />
+                    <span>Licensed and regulated operations</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Award className="h-5 w-5 text-green-600" />
+                    <span>Award-winning product quality</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-green-600" />
+                    <span>Supporting local communities</span>
+                  </div>
                 </div>
               </div>
-              <Image
-                src="/placeholder.svg?height=400&width=500"
-                width={500}
-                height={400}
-                alt="Hero"
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-              />
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold">Our Mission</h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  To provide access to premium cannabis products while educating our community about responsible consumption and the benefits of quality cannabis. We're committed to transparency, sustainability, and exceptional customer service.
+                </p>
+                <Button asChild variant="outline">
+                  <Link href="/about">Learn More About Us</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-950">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -96,7 +133,7 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
+            <div className="mx-auto grid max-w-6xl items-center gap-8 py-12 lg:grid-cols-4">
               <div className="flex flex-col justify-center space-y-4 text-center">
                 <Leaf className="mx-auto h-12 w-12 text-green-600" />
                 <h3 className="text-xl font-bold">Premium Quality</h3>
@@ -116,9 +153,86 @@ export default function HomePage() {
                   Fast, reliable, and discreet delivery right to your door.
                 </p>
               </div>
+              <div className="flex flex-col justify-center space-y-4 text-center">
+                <Clock className="mx-auto h-12 w-12 text-green-600" />
+                <h3 className="text-xl font-bold">24/7 Support</h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  Our customer service team is always here to help you.
+                </p>
+              </div>
             </div>
           </div>
         </section>
+
+        {/* Product Categories Section */}
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-950">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-purple-100 px-3 py-1 text-sm text-purple-800 dark:bg-purple-900/20 dark:text-purple-400">
+                  Product Categories
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Explore Our Range</h2>
+                <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+                  From premium flower to concentrates and edibles, we have everything you need.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3">
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Leaf className="h-6 w-6 text-green-600" />
+                    Premium Flower
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    Hand-selected, organically grown cannabis flower with exceptional potency and flavor profiles. From indica to sativa and hybrids.
+                  </CardDescription>
+                  <Button asChild className="mt-4" variant="outline">
+                    <Link href="/catalogue?category=flower">Browse Flower</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Star className="h-6 w-6 text-amber-500" />
+                    Concentrates
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    High-quality extracts including live resin, rosin, and distillates. Perfect for experienced users seeking potency.
+                  </CardDescription>
+                  <Button asChild className="mt-4" variant="outline">
+                    <Link href="/catalogue?category=concentrates">Browse Concentrates</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Award className="h-6 w-6 text-blue-600" />
+                    Accessories
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    Premium smoking accessories, vaporizers, and cannabis lifestyle products to enhance your experience.
+                  </CardDescription>
+                  <Button asChild className="mt-4" variant="outline">
+                    <Link href="/catalogue?category=accessories">Browse Accessories</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <Testimonials />
 
         {/* How to Acquire Cannabis Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
@@ -132,7 +246,7 @@ export default function HomePage() {
                 Here are some common questions about purchasing cannabis from Herbally.
               </p>
             </div>
-            <div className="mx-auto mt-12 grid max-w-3xl gap-8 text-left">
+            <div className="mx-auto mt-12 grid max-w-4xl gap-8 text-left lg:grid-cols-2">
               <div className="space-y-2">
                 <h3 className="text-xl font-bold flex items-center gap-2">
                   <QuestionCircleIcon className="h-6 w-6 text-blue-600" />
@@ -150,7 +264,7 @@ export default function HomePage() {
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
                   You must be 18 years or older to become a VSC Member and purchase cannabis products. Age verification
-                  is required.
+                  is required during registration.
                 </p>
               </div>
               <div className="space-y-2">
@@ -178,6 +292,9 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* CTA Section */}
+        <CTA />
+
         {/* Call to Action Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-950">
           <div className="container px-4 md:px-6 text-center">
@@ -187,9 +304,14 @@ export default function HomePage() {
                 Become a VSC member for R41/month and unlock exclusive discounts, early access to new products, and
                 more.
               </p>
-              <Button asChild size="lg">
-                <Link href="/membership">Learn More & Join</Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild size="lg">
+                  <Link href="/membership">Learn More & Join</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/contact">Contact Us</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
@@ -204,12 +326,12 @@ export default function HomePage() {
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Featured Merchandise</h2>
                 <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  Check out some of our popular merchandise items.
+                  Check out some of our popular merchandise items to show your Herbally pride.
                 </p>
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-2 xl:grid-cols-2">
-              <Card>
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <Image
                     src="/images/athletics-shirt-new.jpg"
@@ -221,7 +343,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <CardTitle>Herbally Athletics Shirt</CardTitle>
-                  <CardDescription>Comfortable and stylish athletic shirt with Herbally branding.</CardDescription>
+                  <CardDescription>Comfortable and stylish athletic shirt with Herbally branding. Perfect for workouts or casual wear.</CardDescription>
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold">R350.00</span>
                     <Button size="sm" asChild>
@@ -230,7 +352,7 @@ export default function HomePage() {
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <Image
                     src="/images/og-hoodie-new.jpg"
@@ -242,7 +364,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <CardTitle>Herbally OG Hoodie</CardTitle>
-                  <CardDescription>Classic hoodie for ultimate comfort and style.</CardDescription>
+                  <CardDescription>Classic hoodie for ultimate comfort and style. Made with premium materials for lasting quality.</CardDescription>
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold">R600.00</span>
                     <Button size="sm" asChild>
