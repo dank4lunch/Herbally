@@ -34,11 +34,11 @@ export function Navbar() {
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold" prefetch={false}>
           <Image 
-            src="/images/herbally-logo-compact.svg" 
-            alt="Herbally Logo" 
-            width={160} 
-            height={48} 
-            className="h-auto max-h-12 w-auto herbally-logo herbally-logo-navbar" 
+            src="/images/herbally-vintage-logo-compact.svg" 
+            alt="Herbally Vintage Logo" 
+            width={180} 
+            height={60} 
+            className="h-auto max-h-14 w-auto herbally-logo herbally-logo-navbar" 
           />
           <span className="sr-only">Herbally</span>
         </Link>
@@ -139,11 +139,11 @@ export function Navbar() {
               <div className="flex flex-col gap-6 p-6">
                 <Link href="/" className="flex items-center gap-2 text-lg font-semibold" prefetch={false}>
                   <Image
-                    src="/images/herbally-logo.jpeg"
-                    alt="Herbally Logo"
-                    width={120}
-                    height={40}
-                    className="h-auto"
+                    src="/images/herbally-vintage-logo-compact.svg"
+                    alt="Herbally Vintage Logo"
+                    width={140}
+                    height={47}
+                    className="h-auto max-h-10"
                   />
                   <span className="sr-only">Herbally</span>
                 </Link>

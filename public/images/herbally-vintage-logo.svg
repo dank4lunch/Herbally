@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for text -->
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#333333;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Cannabis leaf detailed path -->
+    <g id="cannabisLeafDetailed">
+      <path d="M0,20 Q-2,18 0,16 Q2,14 6,15 Q10,12 14,14 Q18,10 22,13 Q26,8 30,12 Q34,6 38,11 Q42,8 46,12 Q50,10 52,14 Q50,16 46,15 Q42,18 38,16 Q34,20 30,17 Q26,22 22,18 Q18,24 14,19 Q10,22 6,18 Q2,20 0,20 Z" 
+            fill="currentColor"/>
+      <!-- Additional leaf segments -->
+      <path d="M10,20 Q8,22 6,24 Q8,26 12,25 Q16,28 20,26 Q24,30 28,27 Q32,32 36,28 Q40,30 42,26 Q40,24 36,25 Q32,22 28,24 Q24,20 20,23 Q16,18 12,21 Q10,20 10,20 Z" 
+            fill="currentColor" opacity="0.8"/>
+    </g>
+    
+    <!-- Decorative vine pattern -->
+    <g id="vinePattern">
+      <path d="M0,0 Q15,8 30,0 Q45,8 60,0 Q75,8 90,0" stroke="currentColor" stroke-width="2" fill="none" opacity="0.7"/>
+      <circle cx="15" cy="4" r="2" fill="currentColor" opacity="0.6"/>
+      <circle cx="45" cy="4" r="2" fill="currentColor" opacity="0.6"/>
+      <circle cx="75" cy="4" r="2" fill="currentColor" opacity="0.6"/>
+    </g>
+    
+    <!-- Ornate corner decoration -->
+    <g id="cornerDecor">
+      <path d="M0,0 L20,0 Q15,5 10,10 Q5,15 0,20 Z" fill="currentColor" opacity="0.3"/>
+      <path d="M5,5 Q10,7 15,5 Q12,10 10,15 Q7,12 5,10 Z" fill="currentColor" opacity="0.5"/>
+    </g>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="600" height="400" fill="#f8f8f0" opacity="0"/>
+  
+  <!-- Main ornate border -->
+  <rect x="40" y="40" width="520" height="320" rx="20" fill="none" stroke="#2d2d2d" stroke-width="3"/>
+  <rect x="50" y="50" width="500" height="300" rx="15" fill="none" stroke="#2d2d2d" stroke-width="2" opacity="0.7"/>
+  
+  <!-- Corner decorations -->
+  <g transform="translate(60,60)" color="#2d2d2d">
+    <use href="#cornerDecor"/>
+    <use href="#cannabisLeafDetailed" transform="scale(0.6) translate(10,-5)"/>
+  </g>
+  
+  <g transform="translate(540,60) scale(-1,1)" color="#2d2d2d">
+    <use href="#cornerDecor"/>
+    <use href="#cannabisLeafDetailed" transform="scale(0.6) translate(10,-5)"/>
+  </g>
+  
+  <g transform="translate(60,340) scale(1,-1)" color="#2d2d2d">
+    <use href="#cornerDecor"/>
+    <use href="#cannabisLeafDetailed" transform="scale(0.6) translate(10,-5)"/>
+  </g>
+  
+  <g transform="translate(540,340) scale(-1,-1)" color="#2d2d2d">
+    <use href="#cornerDecor"/>
+    <use href="#cannabisLeafDetailed" transform="scale(0.6) translate(10,-5)"/>
+  </g>
+  
+  <!-- Left side cannabis leaf vine -->
+  <g color="#2d2d2d" opacity="0.8">
+    <use href="#cannabisLeafDetailed" transform="translate(80,120) scale(0.8) rotate(-15)"/>
+    <use href="#cannabisLeafDetailed" transform="translate(70,160) scale(0.7) rotate(-25)"/>
+    <use href="#cannabisLeafDetailed" transform="translate(75,200) scale(0.8) rotate(-10)"/>
+    <use href="#cannabisLeafDetailed" transform="translate(70,240) scale(0.7) rotate(-20)"/>
+    <use href="#cannabisLeafDetailed" transform="translate(80,280) scale(0.8) rotate(-15)"/>
+  </g>
+  
+  <!-- Right side cannabis leaf vine -->
+  <g color="#2d2d2d" opacity="0.8">
+    <use href="#cannabisLeafDetailed" transform="translate(520,120) scale(-0.8,0.8) rotate(15)"/>
+    <use href="#cannabisLeafDetailed" transform="translate(530,160) scale(-0.7,0.7) rotate(25)"/>
+    <use href="#cannabisLeafDetailed" transform="translate(525,200) scale(-0.8,0.8) rotate(10)"/>
+    <use href="#cannabisLeafDetailed" transform="translate(530,240) scale(-0.7,0.7) rotate(20)"/>
+    <use href="#cannabisLeafDetailed" transform="translate(520,280) scale(-0.8,0.8) rotate(15)"/>
+  </g>
+  
+  <!-- Top decorative vine with grapes -->
+  <g transform="translate(150,80)" color="#2d2d2d">
+    <use href="#vinePattern" transform="scale(1,0.8)"/>
+    <!-- Grape clusters -->
+    <g transform="translate(20,10)">
+      <circle cx="0" cy="0" r="3" fill="currentColor" opacity="0.6"/>
+      <circle cx="4" cy="2" r="3" fill="currentColor" opacity="0.6"/>
+      <circle cx="-4" cy="2" r="3" fill="currentColor" opacity="0.6"/>
+      <circle cx="2" cy="6" r="3" fill="currentColor" opacity="0.6"/>
+      <circle cx="-2" cy="6" r="3" fill="currentColor" opacity="0.6"/>
+    </g>
+    <g transform="translate(280,10)">
+      <circle cx="0" cy="0" r="3" fill="currentColor" opacity="0.6"/>
+      <circle cx="4" cy="2" r="3" fill="currentColor" opacity="0.6"/>
+      <circle cx="-4" cy="2" r="3" fill="currentColor" opacity="0.6"/>
+      <circle cx="2" cy="6" r="3" fill="currentColor" opacity="0.6"/>
+      <circle cx="-2" cy="6" r="3" fill="currentColor" opacity="0.6"/>
+    </g>
+  </g>
+  
+  <!-- Marijuanas Finest 1769 text (top) -->
+  <text x="300" y="130" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#2d2d2d" opacity="0.8">
+    Marijuanas Finest
+  </text>
+  <text x="300" y="150" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#2d2d2d" opacity="0.7">
+    1769
+  </text>
+  
+  <!-- Main "Herbally" text -->
+  <text x="300" y="220" text-anchor="middle" font-family="serif" font-size="72" font-weight="bold" fill="url(#textGradient)" letter-spacing="2px">
+    Herbally
+  </text>
+  
+  <!-- "VERY SPECIAL" text -->
+  <text x="300" y="250" text-anchor="middle" font-family="serif" font-size="16" font-weight="bold" fill="#2d2d2d" letter-spacing="6px" opacity="0.9">
+    VERY SPECIAL
+  </text>
+  
+  <!-- "CHRONIC" text -->
+  <text x="300" y="280" text-anchor="middle" font-family="serif" font-size="24" font-weight="bold" fill="#2d2d2d" letter-spacing="4px" opacity="0.9">
+    CHRONIC
+  </text>
+  
+  <!-- Bottom decorative vine -->
+  <g transform="translate(150,320)" color="#2d2d2d">
+    <use href="#vinePattern" transform="scale(1,-0.8)"/>
+  </g>
+  
+  <!-- Central decorative flourish -->
+  <g transform="translate(300,300)" color="#2d2d2d" opacity="0.6">
+    <path d="M-30,0 Q-15,-8 0,0 Q15,-8 30,0 Q15,8 0,0 Q-15,8 -30,0" fill="currentColor"/>
+    <circle cx="0" cy="0" r="4" fill="currentColor"/>
+  </g>
+</svg>

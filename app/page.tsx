@@ -28,6 +28,18 @@ export default function HomePage() {
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-green-50 to-emerald-50">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col justify-center items-center text-center space-y-8">
+              {!user && (
+                <div className="mb-8">
+                  <Image 
+                    src="/images/herbally-vintage-logo.svg" 
+                    alt="Herbally Vintage Logo" 
+                    width={400} 
+                    height={267} 
+                    className="h-auto max-h-64 w-auto mx-auto" 
+                    priority
+                  />
+                </div>
+              )}
               <div className="space-y-4 max-w-4xl">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                   {user ? (

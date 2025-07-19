@@ -13,11 +13,11 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Image 
-                src="/images/herbally-logo-compact.svg" 
-                alt="Herbally Logo" 
-                width={120} 
-                height={36} 
-                className="h-auto max-h-9 w-auto herbally-logo herbally-logo-footer" 
+                src="/images/herbally-vintage-logo-compact.svg" 
+                alt="Herbally Vintage Logo" 
+                width={140} 
+                height={42} 
+                className="h-auto max-h-10 w-auto herbally-logo herbally-logo-footer" 
               />
             </div>
             <p className="text-gray-300 text-sm">
