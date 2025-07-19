@@ -46,7 +46,7 @@ const catalogueProducts: Product[] = [
     thc: "18-22%",
     cbd: "0.2-0.8%",
     price: 140.0,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/images/strains/pineapple.jpeg",
     description: "Sweet tropical sativa with distinct pineapple flavors for an uplifting and social high.",
     sizes: ["1g", "3.5g", "7g"],
     inStock: true,
