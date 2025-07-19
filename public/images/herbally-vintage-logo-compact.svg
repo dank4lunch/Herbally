@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for text -->
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#333333;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Cannabis leaf -->
+    <g id="cannabisLeafSmall">
+      <path d="M0,10 Q-1,9 0,8 Q1,7 3,7.5 Q5,6 7,7 Q9,5 11,6.5 Q13,4 15,6 Q17,4 19,6 Q21,5 22,7 Q21,8 19,7.5 Q17,9 15,8 Q13,10 11,8.5 Q9,11 7,9 Q5,10 3,8.5 Q1,9 0,10 Z" 
+            fill="currentColor"/>
+    </g>
+  </defs>
+  
+  <!-- Cannabis leaf decorations on sides -->
+  <g color="#2d2d2d" opacity="0.6">
+    <use href="#cannabisLeafSmall" transform="translate(20,20) scale(0.8) rotate(-15)"/>
+    <use href="#cannabisLeafSmall" transform="translate(15,35) scale(0.7) rotate(-25)"/>
+    <use href="#cannabisLeafSmall" transform="translate(18,50) scale(0.8) rotate(-10)"/>
+    <use href="#cannabisLeafSmall" transform="translate(15,65) scale(0.7) rotate(-20)"/>
+  </g>
+  
+  <g color="#2d2d2d" opacity="0.6">
+    <use href="#cannabisLeafSmall" transform="translate(280,20) scale(-0.8,0.8) rotate(15)"/>
+    <use href="#cannabisLeafSmall" transform="translate(285,35) scale(-0.7,0.7) rotate(25)"/>
+    <use href="#cannabisLeafSmall" transform="translate(282,50) scale(-0.8,0.8) rotate(10)"/>
+    <use href="#cannabisLeafSmall" transform="translate(285,65) scale(-0.7,0.7) rotate(20)"/>
+  </g>
+  
+  <!-- Small "Marijuanas Finest" text -->
+  <text x="150" y="20" text-anchor="middle" font-family="serif" font-size="8" font-style="italic" fill="#2d2d2d" opacity="0.7">
+    Marijuanas Finest • 1769
+  </text>
+  
+  <!-- Main "Herbally" text -->
+  <text x="150" y="55" text-anchor="middle" font-family="serif" font-size="32" font-weight="bold" fill="url(#textGradient)" letter-spacing="1px">
+    Herbally
+  </text>
+  
+  <!-- "VERY SPECIAL CHRONIC" text -->
+  <text x="150" y="75" text-anchor="middle" font-family="serif" font-size="7" font-weight="bold" fill="#2d2d2d" letter-spacing="2px" opacity="0.8">
+    VERY SPECIAL CHRONIC
+  </text>
+  
+  <!-- Small decorative flourish -->
+  <g transform="translate(150,85)" color="#2d2d2d" opacity="0.5">
+    <path d="M-15,0 Q-7,-3 0,0 Q7,-3 15,0 Q7,3 0,0 Q-7,3 -15,0" fill="currentColor"/>
+    <circle cx="0" cy="0" r="1.5" fill="currentColor"/>
+  </g>
+</svg>
